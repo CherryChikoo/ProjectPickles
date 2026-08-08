@@ -54,8 +54,8 @@ export const ProductCard = ({ product }: { product: Product }) => {
       
       <div className="p-6 flex flex-col flex-1 bg-white group-hover:bg-black group-hover:text-white transition-colors duration-200">
         <h3 className="text-2xl font-sans">{product.name}</h3>
-        <p className="text-sm font-bold mt-1 uppercase tracking-wider">{product.desc}</p>
-        {product.description && (
+        {product.desc && <p className="text-sm font-bold mt-1 uppercase tracking-wider">{product.desc}</p>}
+        {product.description && product.description.toLowerCase() !== (product.desc || '').toLowerCase() && (
           <p className="text-sm mt-3 line-clamp-2 opacity-80 font-medium">
             {product.description}
           </p>
