@@ -189,15 +189,9 @@ export default function Home() {
           Ready for a taste of home?
         </h2>
         <div className="mt-16 max-w-md mx-auto">
-          {/* Mock Input Field */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <input 
-              type="email" 
-              placeholder="Enter your email to get started" 
-              className="w-full sm:w-auto flex-1 px-6 py-4 bg-white text-black border border-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black placeholder-black/50 font-medium rounded-full"
-            />
-            <Link href="/pickles">
-              <ShimmerButton className="shadow-2xl px-8 py-4 h-full">
+          <div className="flex justify-center w-full max-w-[250px] mx-auto">
+            <Link href="/pickles" className="w-full">
+              <ShimmerButton className="shadow-2xl px-8 py-5 w-full">
                 <span className="text-center text-sm font-bold tracking-tight text-white uppercase">
                   ORDER NOW
                 </span>
