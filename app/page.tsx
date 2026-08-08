@@ -11,10 +11,10 @@ const Logo = () => (
 );
 
 const pickles = [
-  { id: 1, name: 'Mango Pickle', desc: 'Traditional recipe', weight: '500g', price: '₹250', img: 'https://images.unsplash.com/photo-1589333555231-15eb270a68d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-  { id: 2, name: 'Garlic Pickle', desc: 'Bold & spicy', weight: '500g', price: '₹280', img: 'https://images.unsplash.com/photo-1627443834676-e17537b9dc07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-  { id: 3, name: 'Mixed Veg', desc: 'Farm fresh', weight: '500g', price: '₹240', img: 'https://images.unsplash.com/photo-1596797882870-8c33deeac224?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
-  { id: 4, name: 'Chili Pickle', desc: 'Extra hot', weight: '500g', price: '₹220', img: 'https://images.unsplash.com/photo-1506163352729-21b5e3240eeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+  { id: 1, name: 'Mango Pickle', desc: 'Traditional recipe', weight: '500g', price: '₹250', img: '/ProductCardMango.png' },
+  { id: 2, name: 'Garlic Pickle', desc: 'Bold & spicy', weight: '500g', price: '₹280', img: '/ProductCardMango.png' },
+  { id: 3, name: 'Mixed Veg', desc: 'Farm fresh', weight: '500g', price: '₹240', img: '/ProductCardMango.png' },
+  { id: 4, name: 'Chili Pickle', desc: 'Extra hot', weight: '500g', price: '₹220', img: '/ProductCardMango.png' },
 ];
 
 export default function Home() {
@@ -136,11 +136,11 @@ export default function Home() {
 
       {/* STORY SECTION */}
       <section className="border-t border-black grid grid-cols-1 lg:grid-cols-2 bg-white">
-        <div className="w-full h-[50vh] lg:h-auto border-b lg:border-b-0 lg:border-r border-black p-4">
+        <div className="w-full h-[50vh] lg:h-auto border-b lg:border-b-0 lg:border-r border-black p-4 bg-white flex items-center justify-center">
           <img 
-            src="https://images.unsplash.com/photo-1596797882870-8c33deeac224?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+            src="/BrandSecNew.png" 
             alt="From our kitchen" 
-            className="w-full h-full object-cover grayscale"
+            className="w-full h-full object-contain"
           />
         </div>
         <div className="p-10 sm:p-16 md:p-24 flex flex-col justify-center">
