@@ -80,7 +80,7 @@ export default function Home() {
         </h2>
         <div className="mt-16 md:mt-24 w-full max-w-5xl">
           <img 
-            src="/BrandSec.png" 
+            src="/BrandSecNew.png" 
             alt="Making pickles" 
             className="w-full h-auto object-contain"
           />
@@ -140,7 +140,7 @@ export default function Home() {
           <img 
             src="https://images.unsplash.com/photo-1596797882870-8c33deeac224?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
             alt="From our kitchen" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover grayscale"
           />
         </div>
         <div className="p-10 sm:p-16 md:p-24 flex flex-col justify-center">
