@@ -44,6 +44,10 @@ export default function ErrorPage({
           BACK TO HOME
         </Link>
       </div>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        nav, footer { display: none !important; }
+      `}} />
     </div>
   );
 }

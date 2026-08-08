@@ -21,6 +21,10 @@ export default function NotFound() {
       >
         BACK TO HOME
       </Link>
+      
+      <style dangerouslySetInnerHTML={{ __html: `
+        nav, footer { display: none !important; }
+      `}} />
     </div>
   );
 }
