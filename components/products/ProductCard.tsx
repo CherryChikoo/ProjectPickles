@@ -59,7 +59,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
         )}
         
         {(product.description || product.desc) && (
-          <p className="text-sm mt-3 line-clamp-2 text-black/60 font-medium">
+          <p className="text-sm mt-3 line-clamp-2 text-black/60 group-hover:text-white/70 font-medium transition-colors">
             {product.description || product.desc}
           </p>
         )}
