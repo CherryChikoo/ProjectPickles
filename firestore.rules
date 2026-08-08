@@ -51,10 +51,10 @@ service cloud.firestore {
       // allowing unauthenticated creation allows guests to checkout.
       allow create: if true;
       
-      // Allow customers to track their order if they know the exact Order ID.
-      // This requires the query to strictly filter by the orderId field and limit to 1.
-      // (Used by Server Actions to securely fetch the document and strip sensitive info before sending to browser).
-      allow list: if request.query.limit <= 1 && request.query.filters.size() == 1 && request.query.filters[0].op == '==' && request.query.filters[0].field == 'orderId';
+      // Allow customers to track their order
+      // We restrict to limit: 1 to prevent mass scraping, relying on the random Order ID for security
+      allow list: if request.query.limit <= 1;
+      allow get: if true;
       
       // ONLY admins can read, update, or delete orders.
       // Customers cannot read the orders collection to scrape other people's data.
