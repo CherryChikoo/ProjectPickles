@@ -28,7 +28,7 @@ export default function PicklesPage() {
   return (
     <div className="min-h-screen bg-white text-black">
       {/* HERO SECTION */}
-      <section className="pt-32 sm:pt-40 md:pt-48 pb-20 md:pb-32 px-6 sm:px-10 md:px-14 max-w-[1600px] mx-auto border-b border-black flex flex-col md:flex-row items-center gap-12 lg:gap-20">
+      <section className="pt-24 sm:pt-28 md:pt-32 pb-20 md:pb-32 px-6 sm:px-10 md:px-14 max-w-[1600px] mx-auto border-b border-black flex flex-col md:flex-row items-center min-h-[75vh] gap-12 lg:gap-20">
         <div className="w-full lg:w-5/12 flex flex-col items-start text-left">
           <h2 className="text-sm font-bold uppercase tracking-widest text-black mb-8">OUR COLLECTION</h2>
           <h1 className="font-sans text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] leading-[1.05] tracking-tight text-black font-normal max-w-4xl">
