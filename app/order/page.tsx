@@ -96,7 +96,7 @@ export default function OrderPage() {
     const cartItemsPayload = items.map(item => ({
       productId: item.productId,
       quantity: item.quantity,
-      expectedPrice: parseInt(item.price.replace(/[^0-9]/g, ''), 10) || 0
+      expectedPrice: parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0
     }));
     
     const result = await createOrder(formData, cartItemsPayload);
@@ -264,7 +264,7 @@ export default function OrderPage() {
                     <p className="text-sm font-medium">{item.weight} &times; {item.quantity}</p>
                   </div>
                   <div className="font-bold">
-                    ₹{parseInt(item.price.replace(/[^0-9]/g, '')) * item.quantity}
+                    ₹{parseFloat(String(item.price).replace(/[^0-9.]/g, '')) * item.quantity}
                   </div>
                 </div>
               ))}

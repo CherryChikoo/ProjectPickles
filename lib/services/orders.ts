@@ -66,7 +66,7 @@ export const createOrder = async (
       }
 
       // Parse the price string (e.g., "₹250") to a number
-      const numericPrice = parseInt(product.price.replace(/[^0-9]/g, ''), 10);
+      const numericPrice = parseFloat(String(product.price).replace(/[^0-9.]/g, '')) || 0;
       
       if (isNaN(numericPrice)) {
         return { success: false, error: `Invalid price format for "${product.name}".` };
