@@ -27,7 +27,7 @@ export const Navbar = () => {
         <Link href="/" className="text-sm text-black hover:underline underline-offset-4">Home</Link>
         <Link href="/pickles" className="text-sm text-black hover:underline underline-offset-4">Pickles</Link>
         <Link href="/#story" className="text-sm text-black hover:underline underline-offset-4">Our Story</Link>
-        <Link href="/#contact" className="text-sm text-black hover:underline underline-offset-4">Contact</Link>
+        <Link href="/track-order" className="text-sm text-black hover:underline underline-offset-4">Track Order</Link>
       </div>
       
       <Link href="/cart" className="px-6 py-2.5 bg-black text-white text-sm font-bold tracking-tight uppercase hover:bg-white hover:text-black hover:border-black border border-transparent transition-colors duration-200">

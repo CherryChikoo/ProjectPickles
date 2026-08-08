@@ -22,7 +22,7 @@ export const Footer = () => {
           <Link href="/" className="hover:underline underline-offset-4">Home</Link>
           <Link href="/pickles" className="hover:underline underline-offset-4">Pickles</Link>
           <Link href="/#story" className="hover:underline underline-offset-4">Our Story</Link>
-          <Link href="/#contact" className="hover:underline underline-offset-4">Contact</Link>
+          <Link href="/track-order" className="hover:underline underline-offset-4">Track Order</Link>
         </div>
         
         <div className="flex flex-col gap-4 font-bold text-sm uppercase tracking-widest">
