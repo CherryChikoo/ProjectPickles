@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { AlertCircle } from 'lucide-react';
+import { ShimmerButton } from "@/components/magicui/shimmer-button";
 
 export default function ErrorPage({
   error,
@@ -30,16 +31,17 @@ export default function ErrorPage({
         We've encountered an unexpected error. Please try again or go back to the homepage.
       </p>
       
-      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-sm">
-        <button
-          onClick={() => reset()}
-          className="w-full sm:w-auto px-8 py-4 bg-black text-white text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black hover:border-black border-2 border-transparent transition-all duration-300 rounded-full text-center"
-        >
-          TRY AGAIN
+      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-md">
+        <button onClick={() => reset()}>
+          <ShimmerButton className="shadow-2xl px-8 py-4">
+            <span className="text-center text-sm font-bold tracking-tight text-white uppercase">
+              TRY AGAIN
+            </span>
+          </ShimmerButton>
         </button>
         <Link 
           href="/"
-          className="w-full sm:w-auto px-8 py-4 bg-white text-black text-sm font-bold uppercase tracking-widest hover:bg-black hover:text-white border-2 border-black transition-all duration-300 rounded-full text-center"
+          className="px-8 py-4 bg-white text-black text-sm font-bold border border-black hover:bg-black hover:text-white transition-colors duration-200 rounded-full inline-flex items-center justify-center"
         >
           BACK TO HOME
         </Link>

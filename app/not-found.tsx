@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { ShimmerButton } from "@/components/magicui/shimmer-button";
 
 export default function NotFound() {
   return (
@@ -15,11 +16,13 @@ export default function NotFound() {
       <p className="max-w-md text-lg text-black/70 font-medium mb-12">
         We searched high and low, but couldn't find the page you're looking for. It might have been moved or deleted.
       </p>
-      <Link 
-        href="/"
-        className="px-10 py-5 bg-black text-white text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black hover:border-black border-2 border-transparent transition-all duration-300 rounded-full shadow-[8px_8px_0_0_#000] hover:shadow-[4px_4px_0_0_#000] hover:translate-y-1 hover:translate-x-1"
-      >
-        BACK TO HOME
+      
+      <Link href="/">
+        <ShimmerButton className="shadow-2xl px-10 py-5">
+          <span className="text-center text-sm font-bold tracking-tight text-white uppercase">
+            BACK TO HOME
+          </span>
+        </ShimmerButton>
       </Link>
       
       <style dangerouslySetInnerHTML={{ __html: `
