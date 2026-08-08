@@ -94,15 +94,15 @@ export default function Home() {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section id="why-us" className="border-t border-black bg-white">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-black">
+      <section id="why-us" className="border-t border-black bg-white px-6 sm:px-10 md:px-14 py-16 md:py-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-[1600px] mx-auto">
           {[
             { num: '01', title: 'Traditional Recipes' },
             { num: '02', title: 'Quality Ingredients' },
             { num: '03', title: 'Homemade Taste' },
             { num: '04', title: 'Made With Care' }
           ].map((item, i) => (
-            <div key={i} className="p-8 md:p-12 lg:p-16 flex flex-col items-start bg-white">
+            <div key={i} className="p-8 md:p-12 flex flex-col items-start bg-white border border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:-translate-y-2 hover:shadow-[8px_8px_0_0_rgba(0,0,0,1)] transition-all duration-300 cursor-default">
               <span className="text-5xl md:text-6xl font-bold text-black mb-12">{item.num}</span>
               <h3 className="text-xl md:text-2xl font-sans text-black">{item.title}</h3>
             </div>
@@ -135,14 +135,14 @@ export default function Home() {
       </section>
 
       {/* ORDERING PROCESS */}
-      <section className="border-t border-black bg-white">
-        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-black">
+      <section className="border-t border-black bg-white px-6 sm:px-10 md:px-14 py-16 md:py-24">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-[1600px] mx-auto">
           {[
             { num: '01', title: 'Choose Your Pickle' },
             { num: '02', title: 'Place Your Order' },
             { num: '03', title: 'We Confirm' }
           ].map((item, i) => (
-            <div key={i} className="p-10 md:p-14 text-center flex flex-col items-center bg-white">
+            <div key={i} className="p-10 md:p-14 text-center flex flex-col items-center bg-white border border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:-translate-y-2 hover:shadow-[8px_8px_0_0_rgba(0,0,0,1)] transition-all duration-300 cursor-default">
               <span className="text-4xl md:text-5xl font-sans text-black mb-6">{item.num}</span>
               <h3 className="text-lg font-bold uppercase tracking-widest text-black">{item.title}</h3>
             </div>
