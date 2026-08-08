@@ -146,7 +146,7 @@ export function OrderDetailsModal({ order, onClose, onUpdateStatus }: OrderDetai
                   onClick={handleWhatsAppClick}
                   className="w-full py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black border border-black transition-colors flex justify-center items-center gap-2"
                 >
-                  <MessageCircle className="w-4 h-4" /> Message Customer on WhatsApp
+                  <MessageCircle className="w-4 h-4" /> SEND {order.status} UPDATE ON WHATSAPP
                 </button>
               ) : (
                 <div className="p-3 border border-black bg-black/5">
