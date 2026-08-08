@@ -52,8 +52,19 @@ export default function OrderPage() {
     
     if (!formData.name.trim()) newErrors.name = 'Full name is required.';
     
+    // WhatsApp Validation
     if (!formData.whatsapp.trim()) {
       newErrors.whatsapp = 'WhatsApp number is required.';
+    } else {
+      let cleanWhatsapp = formData.whatsapp.replace(/[\s\+\-\(\)]/g, '');
+      if (cleanWhatsapp.startsWith('91') && cleanWhatsapp.length === 12) {
+        cleanWhatsapp = cleanWhatsapp.slice(2);
+      }
+      
+      const whatsappRegex = /^[0-9]{10}$/;
+      if (!whatsappRegex.test(cleanWhatsapp)) {
+        newErrors.whatsapp = 'Please enter a valid 10-digit WhatsApp number.';
+      }
     }
 
     if (!formData.address.trim()) newErrors.address = 'Address is required.';

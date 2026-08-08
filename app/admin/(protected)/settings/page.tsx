@@ -27,12 +27,18 @@ export default function AdminSettingsPage() {
   }, [settings, isContextLoading]);
 
   const normalizePhoneNumber = (num: string) => {
-    if (!num) return '';
+    if (!num.trim()) return '';
     let clean = num.replace(/[\s\+\-\(\)]/g, '');
+    
+    if (!/^\d+$/.test(clean)) return null;
+
     if (clean.length === 10) {
-      clean = '91' + clean;
+      return '91' + clean;
+    } else if (clean.length === 12 && clean.startsWith('91')) {
+      return clean;
     }
-    return clean;
+    
+    return null;
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -40,7 +46,16 @@ export default function AdminSettingsPage() {
     setIsSaving(true);
     setMessage(null);
 
-    const normalizedWhatsapp = normalizePhoneNumber(whatsappNumber);
+    let normalizedWhatsapp: string | null = '';
+    
+    if (whatsappNumber.trim()) {
+      normalizedWhatsapp = normalizePhoneNumber(whatsappNumber);
+      if (normalizedWhatsapp === null) {
+        setMessage({ type: 'error', text: 'Please enter a valid 10-digit WhatsApp number.' });
+        setIsSaving(false);
+        return;
+      }
+    }
 
     try {
       const settingsRef = doc(db, 'settings', 'global');
