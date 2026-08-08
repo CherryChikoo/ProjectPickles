@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 
-export default function OrderSuccessPage() {
+function OrderSuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('id');
   const total = searchParams.get('total');
@@ -52,5 +52,17 @@ export default function OrderSuccessPage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export default function OrderSuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center pt-32 pb-16">
+        <Loader2 className="w-12 h-12 text-black animate-spin" />
+      </div>
+    }>
+      <OrderSuccessContent />
+    </Suspense>
   );
 }
