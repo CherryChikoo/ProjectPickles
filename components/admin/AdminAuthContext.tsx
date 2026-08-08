@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 
@@ -27,42 +27,58 @@ export const AdminAuthProvider = ({ children }: { children: React.ReactNode }) =
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    let unsubscribeDoc: () => void;
+
+    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       
       if (currentUser) {
-        try {
-          // Check if this user exists in the "users" collection with role "admin"
-          const userDocRef = doc(db, 'users', currentUser.uid);
-          const userDocSnap = await getDoc(userDocRef);
-          
+        const userDocRef = doc(db, 'users', currentUser.uid);
+        
+        // Listen to changes in the user document in real-time
+        unsubscribeDoc = onSnapshot(userDocRef, async (userDocSnap) => {
           if (userDocSnap.exists()) {
             const userData = userDocSnap.data();
+            
+            // Check session ID
+            const localSessionId = localStorage.getItem('adminSessionId');
+            if (userData.activeSessionId && localSessionId !== userData.activeSessionId) {
+              // Another device/tab logged in
+              setIsAdmin(false);
+              await firebaseSignOut(auth);
+              alert("You have been logged out because your account was accessed from another device or session.");
+              return;
+            }
+
             if (userData.role === 'admin' && userData.active === true) {
               setIsAdmin(true);
             } else {
               setIsAdmin(false);
-              // Not an admin, sign them out immediately
               await firebaseSignOut(auth);
             }
           } else {
             setIsAdmin(false);
-            // No user doc found, sign them out
             await firebaseSignOut(auth);
           }
-        } catch (error) {
+          setIsLoading(false);
+        }, async (error) => {
           console.error("Error fetching user role:", error);
           setIsAdmin(false);
           await firebaseSignOut(auth);
-        }
+          setIsLoading(false);
+        });
+
       } else {
         setIsAdmin(false);
+        setIsLoading(false);
+        if (unsubscribeDoc) unsubscribeDoc();
       }
-      
-      setIsLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeDoc) unsubscribeDoc();
+    };
   }, []);
 
   const signOut = async () => {

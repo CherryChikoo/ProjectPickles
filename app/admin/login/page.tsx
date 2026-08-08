@@ -3,7 +3,8 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { doc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase';
 import { useAdminAuth } from '@/components/admin/AdminAuthContext';
 import { Loader2, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
@@ -40,9 +41,18 @@ function AdminLoginForm() {
     setIsSubmitting(true);
 
     try {
-      // Sign in with Firebase Authentication
-      await signInWithEmailAndPassword(auth, email, password);
-      // AdminAuthContext will automatically detect the login, verify the role in Firestore,
+      // 1. Generate unique session ID for this browser
+      const sessionId = crypto.randomUUID();
+      localStorage.setItem('adminSessionId', sessionId);
+
+      // 2. Sign in with Firebase Authentication
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      
+      // 3. Update the Firestore user document with this session ID
+      const userDocRef = doc(db, 'users', userCredential.user.uid);
+      await updateDoc(userDocRef, { activeSessionId: sessionId });
+
+      // AdminAuthContext will automatically detect the login, verify the role and session in Firestore,
       // update the state, and the useEffect above will redirect them to the dashboard.
     } catch (err: any) {
       console.error('Login error:', err);
