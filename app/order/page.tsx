@@ -96,6 +96,7 @@ export default function OrderPage() {
     setSubmitError(null);
     if (validate()) {
       setStep(2);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -131,7 +132,7 @@ export default function OrderPage() {
           <ArrowLeft className="w-4 h-4" /> Back to Cart
         </Link>
       ) : (
-        <button onClick={() => setStep(1)} className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest border-b border-black pb-1 hover:pr-2 transition-all mb-16">
+        <button onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest border-b border-black pb-1 hover:pr-2 transition-all mb-16">
           <ArrowLeft className="w-4 h-4" /> Back to Edit
         </button>
       )}
@@ -241,7 +242,7 @@ export default function OrderPage() {
 
               <div className="flex flex-col sm:flex-row gap-4 mt-8">
                 <button 
-                  onClick={() => setStep(1)}
+                  onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                   disabled={isSubmitting}
                   className="flex-1 py-5 bg-white text-black text-sm font-bold uppercase tracking-widest hover:bg-black hover:text-white border border-black transition-colors duration-200 flex justify-center items-center disabled:opacity-50"
                 >
