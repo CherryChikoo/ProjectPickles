@@ -4,32 +4,48 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { getOrders, updateOrderStatus, type Order } from '@/lib/services/orders';
 import { OrdersTable } from '@/components/admin/orders/OrdersTable';
 import { OrderDetailsModal } from '@/components/admin/orders/OrderDetailsModal';
-import { Search, Filter, Loader2, RefreshCw } from 'lucide-react';
+import { Search, Loader2, RefreshCw } from 'lucide-react';
 import { getCountFromServer, collection, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 const STATUS_FILTERS = ['ALL', 'PENDING', 'ACCEPTED', 'REJECTED', 'COMPLETED', 'CANCELLED'];
 
+// In-memory cache to prevent flashing when navigating between pages
+let cachedCounts: any = null;
+let cachedOrdersByStatus: Record<string, any[]> = {};
+let cachedLastVisibleByStatus: Record<string, any> = {};
+let cachedHasMoreByStatus: Record<string, boolean> = {};
+
 export default function AdminOrdersPage() {
-  const [orders, setOrders] = useState<(Order & { id: string })[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState('ALL');
+  
+  const [orders, setOrders] = useState<(Order & { id: string })[]>(cachedOrdersByStatus['ALL'] || []);
+  const [loading, setLoading] = useState(!cachedOrdersByStatus['ALL']);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const [statusFilter, setStatusFilter] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   
-  const [lastVisible, setLastVisible] = useState<any>(null);
-  const [hasMore, setHasMore] = useState(true);
+  const [lastVisible, setLastVisible] = useState<any>(cachedLastVisibleByStatus['ALL'] || null);
+  const [hasMore, setHasMore] = useState(cachedHasMoreByStatus['ALL'] !== undefined ? cachedHasMoreByStatus['ALL'] : true);
   
   const [selectedOrder, setSelectedOrder] = useState<(Order & { id: string }) | null>(null);
 
-  const [summaryCounts, setSummaryCounts] = useState({
+  const [summaryCounts, setSummaryCounts] = useState(cachedCounts || {
     total: 0, pending: 0, accepted: 0, rejected: 0, completed: 0
   });
+  const [countsLoading, setCountsLoading] = useState(!cachedCounts);
 
-  const fetchOrders = async (isLoadMore = false) => {
+  const fetchOrders = async (isLoadMore = false, forceRefresh = false) => {
     try {
+      if (!isLoadMore && !forceRefresh && cachedOrdersByStatus[statusFilter]) {
+        setOrders(cachedOrdersByStatus[statusFilter]);
+        setLastVisible(cachedLastVisibleByStatus[statusFilter]);
+        setHasMore(cachedHasMoreByStatus[statusFilter]);
+        setLoading(false);
+        return;
+      }
+
       if (isLoadMore) setLoadingMore(true);
       else setLoading(true);
       setError(null);
@@ -42,14 +58,21 @@ export default function AdminOrdersPage() {
         15 // page size
       );
 
+      let updatedOrders = fetchedOrders;
       if (isLoadMore) {
-        setOrders(prev => [...prev, ...fetchedOrders]);
-      } else {
-        setOrders(fetchedOrders);
+        updatedOrders = [...orders, ...fetchedOrders];
       }
-
+      
+      setOrders(updatedOrders);
       setLastVisible(newLastVisible);
-      setHasMore(fetchedOrders.length === 15);
+      
+      const moreAvailable = fetchedOrders.length === 15;
+      setHasMore(moreAvailable);
+
+      // Update Cache
+      cachedOrdersByStatus[statusFilter] = updatedOrders;
+      cachedLastVisibleByStatus[statusFilter] = newLastVisible;
+      cachedHasMoreByStatus[statusFilter] = moreAvailable;
       
     } catch (err) {
       console.error(err);
@@ -60,8 +83,15 @@ export default function AdminOrdersPage() {
     }
   };
 
-  const fetchSummaryCounts = async () => {
+  const fetchSummaryCounts = async (forceRefresh = false) => {
+    if (cachedCounts && !forceRefresh) {
+      setSummaryCounts(cachedCounts);
+      setCountsLoading(false);
+      return;
+    }
+
     try {
+      setCountsLoading(true);
       const ordersRef = collection(db, 'orders');
       const [total, pending, accepted, rejected, completed] = await Promise.all([
         getCountFromServer(ordersRef),
@@ -70,15 +100,21 @@ export default function AdminOrdersPage() {
         getCountFromServer(query(ordersRef, where('status', '==', 'REJECTED'))),
         getCountFromServer(query(ordersRef, where('status', '==', 'COMPLETED')))
       ]);
-      setSummaryCounts({
+      
+      const newCounts = {
         total: total.data().count,
         pending: pending.data().count,
         accepted: accepted.data().count,
         rejected: rejected.data().count,
         completed: completed.data().count
-      });
+      };
+      
+      setSummaryCounts(newCounts);
+      cachedCounts = newCounts; // Update cache
     } catch (e) {
       console.error("Failed to fetch summary counts", e);
+    } finally {
+      setCountsLoading(false);
     }
   };
 
@@ -90,19 +126,30 @@ export default function AdminOrdersPage() {
     fetchSummaryCounts();
   }, []);
 
+  const handleRefresh = () => {
+    fetchOrders(false, true);
+    fetchSummaryCounts(true);
+  };
+
   const handleUpdateStatus = async (orderId: string, newStatus: string, reason?: string) => {
     const res = await updateOrderStatus(orderId, newStatus, reason);
     if (res.success) {
-      // Update local state to reflect change without re-fetching
-      setOrders(prev => prev.map(o => 
+      // Update local state and cache
+      const updateFn = (prev: any[]) => prev.map(o => 
         o.id === orderId ? { ...o, status: newStatus, rejectionReason: reason, updatedAt: new Date() } : o
-      ));
+      );
+      
+      setOrders(updateFn);
+      
+      Object.keys(cachedOrdersByStatus).forEach(key => {
+        cachedOrdersByStatus[key] = updateFn(cachedOrdersByStatus[key]);
+      });
       
       if (selectedOrder) {
         setSelectedOrder(prev => prev ? { ...prev, status: newStatus, rejectionReason: reason, updatedAt: new Date() } : null);
       }
       
-      fetchSummaryCounts(); // Refresh counts in background
+      fetchSummaryCounts(true); // Force refresh counts
     } else {
       alert("Failed to update status.");
     }
@@ -127,8 +174,8 @@ export default function AdminOrdersPage() {
           <h1 className="font-sans text-4xl font-bold uppercase tracking-widest mb-2">Orders Management</h1>
           <p className="text-black/60 font-bold uppercase tracking-widest text-sm">View and manage customer orders.</p>
         </div>
-        <button onClick={() => { fetchOrders(); fetchSummaryCounts(); }} className="self-start md:self-end flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-widest border border-black hover:bg-black hover:text-white transition-colors">
-          <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} /> Refresh
+        <button onClick={handleRefresh} className="self-start md:self-end flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-widest border border-black hover:bg-black hover:text-white transition-colors">
+          <RefreshCw className={`w-4 h-4 ${(loading || countsLoading) ? 'animate-spin' : ''}`} /> Refresh
         </button>
       </div>
       
@@ -136,23 +183,23 @@ export default function AdminOrdersPage() {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
         <div className="border border-black p-4 bg-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Total Orders</div>
-          <div className="text-2xl font-sans font-bold">{summaryCounts.total}</div>
+          <div className="text-2xl font-sans font-bold">{countsLoading ? '-' : summaryCounts.total}</div>
         </div>
         <div className="border border-black p-4 bg-black text-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/60 mb-2">Pending</div>
-          <div className="text-2xl font-sans font-bold">{summaryCounts.pending}</div>
+          <div className="text-2xl font-sans font-bold">{countsLoading ? '-' : summaryCounts.pending}</div>
         </div>
         <div className="border border-black p-4 bg-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Accepted</div>
-          <div className="text-2xl font-sans font-bold">{summaryCounts.accepted}</div>
+          <div className="text-2xl font-sans font-bold">{countsLoading ? '-' : summaryCounts.accepted}</div>
         </div>
         <div className="border border-black p-4 bg-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Rejected</div>
-          <div className="text-2xl font-sans font-bold">{summaryCounts.rejected}</div>
+          <div className="text-2xl font-sans font-bold">{countsLoading ? '-' : summaryCounts.rejected}</div>
         </div>
         <div className="border border-black p-4 bg-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Completed</div>
-          <div className="text-2xl font-sans font-bold">{summaryCounts.completed}</div>
+          <div className="text-2xl font-sans font-bold">{countsLoading ? '-' : summaryCounts.completed}</div>
         </div>
       </div>
 
@@ -172,7 +219,18 @@ export default function AdminOrdersPage() {
           {STATUS_FILTERS.map(status => (
             <button
               key={status}
-              onClick={() => { setStatusFilter(status); setSearchQuery(''); }}
+              onClick={() => { 
+                setStatusFilter(status); 
+                setSearchQuery(''); 
+                // Set optimistic initial state from cache if available to prevent flash
+                if (cachedOrdersByStatus[status]) {
+                  setOrders(cachedOrdersByStatus[status]);
+                  setLastVisible(cachedLastVisibleByStatus[status]);
+                  setHasMore(cachedHasMoreByStatus[status]);
+                } else {
+                  setOrders([]);
+                }
+              }}
               className={`px-4 py-3 text-xs font-bold uppercase tracking-widest border transition-colors ${
                 statusFilter === status 
                   ? 'bg-black text-white border-black' 
@@ -188,13 +246,13 @@ export default function AdminOrdersPage() {
       {error ? (
         <div className="p-6 border border-red-600 bg-red-50 text-red-900 font-bold text-center">
           <p className="mb-4">{error}</p>
-          <button onClick={() => fetchOrders()} className="px-6 py-2 bg-red-600 text-white text-sm uppercase tracking-widest">Try Again</button>
+          <button onClick={() => fetchOrders(false, true)} className="px-6 py-2 bg-red-600 text-white text-sm uppercase tracking-widest">Try Again</button>
         </div>
       ) : (
         <>
           <OrdersTable 
             orders={filteredOrders} 
-            isLoading={loading} 
+            isLoading={loading && filteredOrders.length === 0} 
             onViewDetails={(order) => setSelectedOrder(order)} 
           />
           
