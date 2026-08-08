@@ -10,11 +10,6 @@ export default {
         sans: ['Inter', 'sans-serif'],
         serif: ['P22 Mackinac W01 Book', 'Georgia', 'serif'],
       },
-      animation: {
-        "shimmer-slide":
-          "shimmer-slide var(--speed) ease-in-out infinite alternate",
-        "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
-      },
       keyframes: {
         "shimmer-slide": {
           to: {
@@ -35,6 +30,17 @@ export default {
             transform: "translateZ(0) rotate(360deg)",
           },
         },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+      },
+      animation: {
+        "shimmer-slide":
+          "shimmer-slide var(--speed) ease-in-out infinite alternate",
+        "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
+        marquee: 'marquee 25s linear infinite',
+      },
       },
     },
   },

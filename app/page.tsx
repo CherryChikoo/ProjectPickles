@@ -135,18 +135,51 @@ export default function Home() {
       </section>
 
       {/* ORDERING PROCESS */}
-      <section className="border-t border-black bg-white px-6 sm:px-10 md:px-14 py-16 md:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-[1600px] mx-auto">
-          {[
-            { num: '01', title: 'Choose Your Pickle' },
-            { num: '02', title: 'Place Your Order' },
-            { num: '03', title: 'We Confirm' }
-          ].map((item, i) => (
-            <div key={i} className="p-10 md:p-14 text-center flex flex-col items-center bg-white border border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:-translate-y-2 hover:shadow-[8px_8px_0_0_rgba(0,0,0,1)] transition-all duration-300 cursor-default">
-              <span className="text-4xl md:text-5xl font-sans text-black mb-6">{item.num}</span>
-              <h3 className="text-lg font-bold uppercase tracking-widest text-black">{item.title}</h3>
-            </div>
-          ))}
+      <section className="border-t border-black bg-white overflow-hidden py-10 md:py-14 flex whitespace-nowrap">
+        {/* We use two identical animated containers side-by-side to create a seamless loop */}
+        <div className="animate-marquee flex items-center shrink-0">
+          <div className="flex items-center gap-12 md:gap-24 px-6 md:px-12 shrink-0">
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">CHOOSE YOUR PICKLE</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">PLACE YOUR ORDER</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">WE CONFIRM</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">SUCCESS ORDER PLACED!!</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+          </div>
+          <div className="flex items-center gap-12 md:gap-24 px-6 md:px-12 shrink-0">
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">CHOOSE YOUR PICKLE</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">PLACE YOUR ORDER</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">WE CONFIRM</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">SUCCESS ORDER PLACED!!</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+          </div>
+        </div>
+        <div className="animate-marquee flex items-center shrink-0">
+          <div className="flex items-center gap-12 md:gap-24 px-6 md:px-12 shrink-0">
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">CHOOSE YOUR PICKLE</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">PLACE YOUR ORDER</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">WE CONFIRM</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">SUCCESS ORDER PLACED!!</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+          </div>
+          <div className="flex items-center gap-12 md:gap-24 px-6 md:px-12 shrink-0">
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">CHOOSE YOUR PICKLE</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">PLACE YOUR ORDER</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">WE CONFIRM</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+            <span className="text-3xl md:text-5xl font-bold uppercase tracking-widest text-black">SUCCESS ORDER PLACED!!</span>
+            <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-black shrink-0"></span>
+          </div>
         </div>
       </section>
 
