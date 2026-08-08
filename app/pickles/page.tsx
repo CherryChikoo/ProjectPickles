@@ -41,7 +41,7 @@ export default function PicklesPage() {
         
         <div className="w-full lg:w-7/12 relative flex justify-center items-center">
           <img 
-            src="/HeroSection.png" 
+            src="/PicklesPage.png" 
             alt="Pickle Collection" 
             className="w-full h-auto object-contain max-h-[60vh]"
           />

@@ -71,7 +71,7 @@ export default function Home() {
         </h2>
         <div className="mt-16 md:mt-24 w-full max-w-5xl">
           <img 
-            src="/BrandSecNew.png" 
+            src="/BrandSection.png" 
             alt="Making pickles" 
             className="w-full h-auto object-contain"
           />
@@ -114,7 +114,7 @@ export default function Home() {
       <section className="border-t border-black grid grid-cols-1 lg:grid-cols-2 bg-white">
         <div className="w-full h-[50vh] lg:h-auto border-b lg:border-b-0 lg:border-r border-black p-4 bg-white flex items-center justify-center">
           <img 
-            src="/BrandSecNew.png" 
+            src="/3rdSectionImage.png" 
             alt="From our kitchen" 
             className="w-full h-full object-contain"
           />
