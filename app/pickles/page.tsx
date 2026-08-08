@@ -1,12 +1,29 @@
-import React from 'react';
-import { getProducts } from '@/lib/services/products';
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { getProducts, type Product } from '@/lib/services/products';
 import { ProductCard } from '@/components/products/ProductCard';
 import Link from 'next/link';
+import { Loader2 } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
+export default function PicklesPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-export default async function PicklesPage() {
-  const products = await getProducts();
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Error loading products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchProducts();
+  }, []);
 
   return (
     <div className="min-h-screen bg-white text-black">
@@ -40,7 +57,12 @@ export default async function PicklesPage() {
           </div>
         </div>
 
-        {products.length > 0 ? (
+        {isLoading ? (
+          <div className="py-32 flex flex-col items-center justify-center text-center">
+            <Loader2 className="w-10 h-10 animate-spin text-black mb-4" />
+            <p className="text-black font-bold uppercase tracking-widest text-sm">Loading Collection...</p>
+          </div>
+        ) : products.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {products.map(product => (
               <ProductCard key={product.id} product={product} />

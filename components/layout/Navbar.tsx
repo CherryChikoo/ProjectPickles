@@ -5,8 +5,11 @@ import Link from 'next/link';
 import { Logo } from '@/components/ui/Logo';
 import { useCart } from '@/components/cart/CartContext';
 
+import { useSettings } from '@/components/settings/SettingsContext';
+
 export const Navbar = () => {
   const { cartCount } = useCart();
+  const { settings } = useSettings();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -17,7 +20,7 @@ export const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 px-6 sm:px-10 md:px-14 py-4 sm:py-5 flex items-center justify-between bg-white border-b border-black">
       <Link href="/" className="flex items-center gap-2.5">
         <Logo />
-        <span className="font-semibold text-lg tracking-tight text-black uppercase">Hema Sathya Foods</span>
+        <span className="font-semibold text-lg tracking-tight text-black uppercase">{settings.storeName}</span>
       </Link>
       
       <div className="hidden md:flex items-center gap-8 font-medium">

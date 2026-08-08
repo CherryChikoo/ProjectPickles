@@ -1,0 +1,74 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // -------------------------------------------------------------------------
+    // SECURITY FUNCTIONS
+    // -------------------------------------------------------------------------
+    
+    // Check if the user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Verify that the authenticated user exists in the users collection
+    // and explicitly has the "admin" role and is "active".
+    function isAdmin() {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.active == true;
+    }
+
+    // -------------------------------------------------------------------------
+    // RULES PER COLLECTION
+    // -------------------------------------------------------------------------
+
+    // USERS COLLECTION
+    match /users/{userId} {
+      // Admins can read all users. A user can read their own document.
+      allow read: if isAdmin() || request.auth.uid == userId;
+      
+      // ONLY admins can create or update users.
+      // This critically prevents a normal user from creating their own doc
+      // and setting `role: "admin"`.
+      allow write: if isAdmin();
+    }
+
+    // PRODUCTS COLLECTION
+    match /products/{productId} {
+      // Products are public, anyone can read them to see the store.
+      allow read: if true;
+      
+      // Only admins can add, update, or delete products.
+      allow write: if isAdmin();
+    }
+
+    // ORDERS COLLECTION
+    match /orders/{orderId} {
+      // For now, anyone can create an order (since it's a public checkout flow).
+      // We are strictly validating the payload in the backend services, but 
+      // allowing unauthenticated creation allows guests to checkout.
+      allow create: if true;
+      
+      // ONLY admins can read, update, or delete orders.
+      // Customers cannot read the orders collection to scrape other people's data.
+      allow read, update, delete: if isAdmin();
+    }
+
+    // SETTINGS COLLECTION
+    match /settings/{document=**} {
+      // Public can read settings (for Store Name, Logo, etc.)
+      allow read: if true;
+      
+      // Only admins can update settings
+      allow write: if isAdmin();
+    }
+
+    // DEFAULT
+    match /{document=**} {
+      // Deny all other access by default
+      allow read, write: if false;
+    }
+  }
+}

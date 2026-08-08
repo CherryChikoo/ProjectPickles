@@ -12,9 +12,12 @@ const firebaseConfig = {
   measurementId: "G-RS4VXBLQP1"
 };
 
+import { getAuth } from "firebase/auth";
+
 // Initialize Firebase only if it hasn't been initialized already (crucial for Next.js)
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 // Initialize Analytics only on the client side since it relies on the window object
 let analytics: Analytics | undefined;
@@ -27,4 +30,4 @@ if (typeof window !== "undefined") {
   });
 }
 
-export { app, analytics, db };
+export { app, analytics, db, auth };

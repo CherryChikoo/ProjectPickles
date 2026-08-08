@@ -1,8 +1,8 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
+import { StoreLayoutWrapper } from '@/components/layout/StoreLayoutWrapper';
 import { CartProvider } from '@/components/cart/CartContext';
+import { SettingsProvider } from '@/components/settings/SettingsContext';
 
 export const metadata: Metadata = {
   title: 'Hema Sathya Foods - Traditional Homemade Pickles',
@@ -23,13 +23,13 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
       </head>
       <body>
-        <CartProvider>
-          <Navbar />
-          <main>
-            {children}
-          </main>
-          <Footer />
-        </CartProvider>
+        <SettingsProvider>
+          <CartProvider>
+            <StoreLayoutWrapper>
+              {children}
+            </StoreLayoutWrapper>
+          </CartProvider>
+        </SettingsProvider>
       </body>
     </html>
   );

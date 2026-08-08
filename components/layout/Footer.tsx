@@ -1,12 +1,17 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import { useSettings } from '@/components/settings/SettingsContext';
 
 export const Footer = () => {
+  const { settings } = useSettings();
+  
   return (
     <footer className="bg-white text-black px-6 sm:px-10 md:px-14 py-16">
       <div className="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
         <div className="md:col-span-2">
-          <span className="font-semibold text-2xl tracking-tight text-black uppercase block mb-6">Hema Sathya Foods</span>
+          <span className="font-semibold text-2xl tracking-tight text-black uppercase block mb-6">{settings.storeName}</span>
           <p className="font-sans text-2xl leading-tight max-w-sm">
             Authentic homemade pickles,<br/>
             made with tradition.
@@ -28,7 +33,7 @@ export const Footer = () => {
       </div>
       
       <div className="max-w-[1600px] mx-auto mt-24 pt-8 border-t border-black flex flex-col sm:flex-row items-center justify-between text-sm font-medium">
-        <p>© {new Date().getFullYear()} Hema Sathya Foods</p>
+        <p>© {new Date().getFullYear()} {settings.storeName}</p>
         <div className="flex gap-6 mt-4 sm:mt-0">
           <Link href="/" className="hover:underline underline-offset-4">Privacy</Link>
           <Link href="/" className="hover:underline underline-offset-4">Terms</Link>

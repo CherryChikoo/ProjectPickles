@@ -1,23 +1,33 @@
+'use client';
+
 import { ArrowRight } from 'lucide-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
-import { getProducts } from '@/lib/services/products';
+import { getProducts, type Product } from '@/lib/services/products';
 import { ProductCard } from '@/components/products/ProductCard';
 
-const Logo = () => (
-  <svg viewBox="0 0 256 256" fill="currentColor" className="w-6 h-6 text-black">
-    <path d="M 144 256 L 27.598 256 L 144 139.598 Z" />
-    <path d="M 256 207.5 L 200 256 L 200 56 L 0 56 L 48 0 L 256 0 Z" />
-    <path d="M 0 204.402 L 0 112 L 92.402 112 Z" />
-  </svg>
-);
+export default function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-export const dynamic = 'force-dynamic';
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Error loading products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchProducts();
+  }, []);
 
-export default async function Home() {
-  const products = await getProducts();
   const featuredPickles = products.slice(0, 4);
+
   return (
     <div className="min-h-screen bg-white text-black overflow-x-hidden selection:bg-black selection:text-white">
       
@@ -74,7 +84,9 @@ export default async function Home() {
           <h2 className="text-sm font-bold uppercase tracking-widest text-black mb-12">OUR PICKLES</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featuredPickles.map(product => (
+            {isLoading ? (
+               <div className="col-span-full py-20 text-center font-bold uppercase tracking-widest text-black/60">Loading...</div>
+            ) : featuredPickles.map(product => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
