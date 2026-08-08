@@ -114,3 +114,76 @@ export const createOrder = async (
     return { success: false, error: 'We couldn\'t place your order right now. Please try again.' };
   }
 };
+
+// ADMIN FUNCTIONS
+
+export const getOrders = async (
+  statusFilter?: string,
+  lastDoc?: any,
+  pageSize = 10
+): Promise<{ orders: Order[]; lastVisible: any }> => {
+  try {
+    const { query, orderBy, limit, startAfter, getDocs, where } = await import('firebase/firestore');
+    
+    let ordersRef = collection(db, 'orders');
+    let q: any;
+
+    if (statusFilter && statusFilter !== 'ALL') {
+      if (lastDoc) {
+        q = query(ordersRef, where('status', '==', statusFilter), orderBy('createdAt', 'desc'), startAfter(lastDoc), limit(pageSize));
+      } else {
+        q = query(ordersRef, where('status', '==', statusFilter), orderBy('createdAt', 'desc'), limit(pageSize));
+      }
+    } else {
+      if (lastDoc) {
+        q = query(ordersRef, orderBy('createdAt', 'desc'), startAfter(lastDoc), limit(pageSize));
+      } else {
+        q = query(ordersRef, orderBy('createdAt', 'desc'), limit(pageSize));
+      }
+    }
+
+    const snapshot = await getDocs(q);
+    
+    const orders = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id, // Firestore document ID
+        ...data
+      };
+    }) as (Order & { id: string })[];
+
+    const lastVisible = snapshot.docs[snapshot.docs.length - 1];
+
+    return { orders, lastVisible };
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    return { orders: [], lastVisible: null };
+  }
+};
+
+export const updateOrderStatus = async (
+  docId: string, 
+  newStatus: string, 
+  rejectionReason?: string
+): Promise<{ success: boolean; error?: string }> => {
+  try {
+    const { doc, updateDoc, serverTimestamp } = await import('firebase/firestore');
+    const orderRef = doc(db, 'orders', docId);
+    
+    const updateData: any = {
+      status: newStatus,
+      updatedAt: serverTimestamp()
+    };
+
+    if (rejectionReason) {
+      updateData.rejectionReason = rejectionReason;
+    }
+
+    await updateDoc(orderRef, updateData);
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    return { success: false, error: 'Failed to update order status.' };
+  }
+};
