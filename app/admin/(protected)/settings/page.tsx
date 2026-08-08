@@ -12,6 +12,7 @@ export default function AdminSettingsPage() {
   
   const [storeName, setStoreName] = useState('');
   const [logoUrl, setLogoUrl] = useState('');
+  const [whatsappNumber, setWhatsappNumber] = useState('');
   
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null);
@@ -21,22 +22,36 @@ export default function AdminSettingsPage() {
     if (!isContextLoading) {
       setStoreName(settings.storeName || '');
       setLogoUrl(settings.logoUrl || '');
+      setWhatsappNumber(settings.businessWhatsAppNumber || '');
     }
   }, [settings, isContextLoading]);
+
+  const normalizePhoneNumber = (num: string) => {
+    if (!num) return '';
+    let clean = num.replace(/[\s\+\-\(\)]/g, '');
+    if (clean.length === 10) {
+      clean = '91' + clean;
+    }
+    return clean;
+  };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
     setMessage(null);
 
+    const normalizedWhatsapp = normalizePhoneNumber(whatsappNumber);
+
     try {
       const settingsRef = doc(db, 'settings', 'global');
       await setDoc(settingsRef, {
         storeName: storeName.trim(),
         logoUrl: logoUrl.trim() || null,
+        businessWhatsAppNumber: normalizedWhatsapp || null,
         updatedAt: new Date().toISOString()
       }, { merge: true });
 
+      setWhatsappNumber(normalizedWhatsapp); // Update input to normalized version
       setMessage({ type: 'success', text: 'Settings saved successfully! The website has been updated.' });
     } catch (error) {
       console.error("Error saving settings:", error);
@@ -123,6 +138,28 @@ export default function AdminSettingsPage() {
                 </div>
               </div>
             )}
+          </div>
+
+          {/* WhatsApp Settings Section */}
+          <div className="pt-8 border-t border-black">
+            <h2 className="font-sans text-2xl font-bold uppercase tracking-widest mb-6">WhatsApp Settings</h2>
+            
+            <div>
+              <label className="block text-sm font-bold uppercase tracking-wider mb-2">Business WhatsApp Number</label>
+              <p className="text-xs font-bold uppercase tracking-widest text-black/60 mb-3">This is the WhatsApp number used by your business/admin account to communicate with customers.</p>
+              <input 
+                type="text" 
+                value={whatsappNumber}
+                onChange={(e) => setWhatsappNumber(e.target.value)}
+                className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
+                placeholder="+91 98765 43210"
+              />
+              {whatsappNumber && (
+                <div className="mt-2 text-xs font-bold uppercase tracking-widest text-black/60 flex items-center gap-1">
+                  ✓ Current value: {whatsappNumber}
+                </div>
+              )}
+            </div>
           </div>
 
           <motion.button 

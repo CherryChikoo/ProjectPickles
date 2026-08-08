@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, Check, ArrowRight, Loader2, Calendar } from 'lucide-react';
+import { X, Check, ArrowRight, Loader2, Calendar, MessageCircle } from 'lucide-react';
 import type { Order } from '@/lib/services/orders';
+import { useSettings } from '@/components/settings/SettingsContext';
 
 export const OrderStatusBadge = ({ status }: { status: string }) => {
   let styles = "border-black text-black";
@@ -25,6 +26,7 @@ interface OrderDetailsProps {
 }
 
 export function OrderDetailsModal({ order, onClose, onUpdateStatus }: OrderDetailsProps) {
+  const { settings } = useSettings();
   const [isUpdating, setIsUpdating] = useState(false);
   const [showRejectReason, setShowRejectReason] = useState(false);
   const [rejectReason, setRejectReason] = useState('');
@@ -56,6 +58,43 @@ export function OrderDetailsModal({ order, onClose, onUpdateStatus }: OrderDetai
       day: '2-digit', month: 'short', year: 'numeric',
       hour: '2-digit', minute: '2-digit', hour12: true
     }).format(date);
+  };
+
+  const handleWhatsAppClick = () => {
+    if (!settings.businessWhatsAppNumber) return;
+
+    let customerNum = order.customer.whatsapp.replace(/[\s\+\-\(\)]/g, '');
+    if (customerNum.length === 10) {
+      customerNum = '91' + customerNum;
+    }
+
+    const businessName = settings.storeName || 'Hema Sathya Foods';
+    const orderId = order.orderId || order.id;
+    let message = '';
+
+    if (order.status === 'PENDING') {
+      message = `Hello ${order.customer.name},\n\nWe have received your pickle order #${orderId}.\n\nOrder Total: ₹${order.totalAmount}\n\nOur team is currently reviewing your order and will confirm it shortly.\n\nThank you for ordering with ${businessName}.`;
+    } else if (order.status === 'ACCEPTED') {
+      message = `Hello ${order.customer.name},\n\nYour pickle order #${orderId} has been accepted.\n\nOrder Total: ₹${order.totalAmount}\n\nThank you for ordering with ${businessName}.`;
+    } else if (order.status === 'REJECTED') {
+      const reason = (order as any).rejectionReason || 'Not specified';
+      message = `Hello ${order.customer.name},\n\nWe are sorry, but your pickle order #${orderId} could not be accepted.\n\nReason:\n${reason}\n\nPlease contact us if you have any questions.\n\nThank you,\n${businessName}`;
+    } else if (order.status === 'COMPLETED') {
+      message = `Hello ${order.customer.name},\n\nYour pickle order #${orderId} has been completed.\n\nOrder Total: ₹${order.totalAmount}\n\nThank you for ordering with ${businessName}!`;
+    } else {
+      message = `Hello ${order.customer.name},\n\nRegarding your pickle order #${orderId}.\n\nOrder Total: ₹${order.totalAmount}\n\nThank you for ordering with ${businessName}.`;
+    }
+
+    let itemsList = '\n\nOrder:\n';
+    order.items.forEach(item => {
+      itemsList += `• ${item.name} - ${item.weight} × ${item.quantity}\n`;
+    });
+    itemsList += `\nTotal: ₹${order.totalAmount}`;
+
+    message += itemsList;
+
+    const url = `https://wa.me/${customerNum}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -91,7 +130,7 @@ export function OrderDetailsModal({ order, onClose, onUpdateStatus }: OrderDetai
             {/* CUSTOMER DETAILS */}
             <div>
               <h3 className="text-sm font-bold uppercase tracking-widest border-b border-black pb-2 mb-4">Customer Details</h3>
-              <div className="space-y-3 text-sm">
+              <div className="space-y-3 text-sm mb-4">
                 <div>
                   <p className="text-black/60 font-bold text-xs uppercase tracking-wider">Name</p>
                   <p className="font-medium text-base">{order.customer.name}</p>
@@ -101,6 +140,22 @@ export function OrderDetailsModal({ order, onClose, onUpdateStatus }: OrderDetai
                   <p className="font-mono text-base">{order.customer.whatsapp}</p>
                 </div>
               </div>
+
+              {settings.businessWhatsAppNumber ? (
+                <button
+                  onClick={handleWhatsAppClick}
+                  className="w-full py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black border border-black transition-colors flex justify-center items-center gap-2"
+                >
+                  <MessageCircle className="w-4 h-4" /> Message Customer on WhatsApp
+                </button>
+              ) : (
+                <div className="p-3 border border-black bg-black/5">
+                  <p className="text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Business WhatsApp number is not configured.</p>
+                  <a href="/admin/settings" className="text-xs font-bold uppercase tracking-widest text-black hover:underline">
+                    Go to WhatsApp Settings →
+                  </a>
+                </div>
+              )}
             </div>
 
             {/* DELIVERY DETAILS */}

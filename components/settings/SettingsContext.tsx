@@ -7,6 +7,7 @@ import { db } from '@/lib/firebase';
 export interface Settings {
   storeName: string;
   logoUrl: string | null;
+  businessWhatsAppNumber?: string;
 }
 
 interface SettingsContextType {
@@ -17,6 +18,7 @@ interface SettingsContextType {
 const defaultSettings: Settings = {
   storeName: 'Hema Sathya Foods',
   logoUrl: null,
+  businessWhatsAppNumber: undefined,
 };
 
 const SettingsContext = createContext<SettingsContextType>({
@@ -38,6 +40,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setSettings({
           storeName: data.storeName || defaultSettings.storeName,
           logoUrl: data.logoUrl || null,
+          businessWhatsAppNumber: data.businessWhatsAppNumber,
         });
       }
       setIsLoading(false);
