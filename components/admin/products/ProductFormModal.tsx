@@ -24,7 +24,9 @@ export function ProductFormModal({ initialData, onClose, onSave }: ProductFormMo
   );
   const [category, setCategory] = useState(initialData?.category || '');
   const [weight, setWeight] = useState(initialData?.weight || '');
-  const [price, setPrice] = useState<string>(initialData?.price ? initialData.price.replace('₹', '') : '');
+  const [price, setPrice] = useState<string>(
+    initialData?.price ? String(initialData.price).replace('₹', '') : ''
+  );
   
   const [imageBase64, setImageBase64] = useState(initialData?.imageBase64 || '');
   const [isProcessingImage, setIsProcessingImage] = useState(false);

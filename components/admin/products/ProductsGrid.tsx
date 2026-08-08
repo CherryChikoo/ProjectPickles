@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Product } from '@/lib/services/products';
-import { Edit2, Trash2, Power, PowerOff, PackageSearch, Loader2 } from 'lucide-react';
+import { Edit2, Trash2, Power, PowerOff, PackageSearch, Loader2, Image as ImageIcon } from 'lucide-react';
 
 interface ProductsGridProps {
   products: Product[];
@@ -36,15 +36,18 @@ export function ProductsGrid({ products, isLoading, onEdit, onDelete, onToggleAc
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       {products.map(product => (
-        <div key={product.id} className="border-2 border-black bg-white flex flex-col group hover:shadow-[8px_8px_0_0_#000] transition-all">
+        <div key={product.id} className="border-2 border-black bg-white flex flex-col group hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0_0_#000] transition-all">
           
-          {/* IMAGE */}
-          <div className="aspect-[4/3] border-b-2 border-black relative overflow-hidden bg-black/5">
-            <img 
-              src={product.imageBase64} 
-              alt={product.name} 
-              className={`w-full h-full object-cover transition-opacity duration-300 ${!product.active ? 'opacity-40 grayscale' : ''}`} 
-            />
+          <div className="aspect-[4/3] border-b-2 border-black relative overflow-hidden bg-black/5 flex items-center justify-center">
+            {product.imageBase64 ? (
+              <img 
+                src={product.imageBase64} 
+                alt={product.name} 
+                className={`w-full h-full object-cover transition-opacity duration-300 ${!product.active ? 'opacity-40 grayscale' : ''}`} 
+              />
+            ) : (
+              <ImageIcon className="w-12 h-12 text-black/20" />
+            )}
             
             {/* BADGES */}
             <div className="absolute top-4 left-4 flex flex-col gap-2 items-start">

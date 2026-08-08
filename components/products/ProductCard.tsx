@@ -27,18 +27,27 @@ export const ProductCard = ({ product }: { product: Product }) => {
 
   return (
     <Link href={`/pickles/${product.id}`} className="group border border-black flex flex-col bg-white h-full hover:shadow-2xl transition-shadow duration-300">
-      <div className="w-full aspect-square border-b border-black overflow-hidden bg-white p-4">
+      <div className="w-full aspect-square border-b border-black overflow-hidden bg-white p-4 relative">
+        
+        {!product.available && (
+          <div className="absolute top-4 left-4 z-10">
+            <span className="bg-white text-black px-4 py-2 text-xs font-bold uppercase tracking-widest border-2 border-black shadow-[4px_4px_0_0_#000]">
+              Out of Stock
+            </span>
+          </div>
+        )}
+
         {product.imageBase64 ? (
           <img 
             src={product.imageBase64.startsWith('data:') ? product.imageBase64 : `data:image/png;base64,${product.imageBase64}`} 
             alt={product.name} 
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 ease-in-out" 
+            className={`w-full h-full object-contain transition-transform duration-500 ease-in-out ${product.available ? 'group-hover:scale-105' : 'opacity-60 grayscale'}`} 
           />
         ) : (
           <img 
             src="/ProductCardMango.png" 
             alt={product.name} 
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 ease-in-out" 
+            className={`w-full h-full object-contain transition-transform duration-500 ease-in-out ${product.available ? 'group-hover:scale-105' : 'opacity-60 grayscale'}`} 
           />
         )}
       </div>
@@ -54,15 +63,28 @@ export const ProductCard = ({ product }: { product: Product }) => {
         
         <div className="mt-6 flex items-center justify-between font-bold text-lg">
           <span>{product.weight}</span>
-          <span>{product.price}</span>
+          <span>₹{product.price}</span>
         </div>
         
         <div className="mt-auto pt-8">
           <button 
-            onClick={handleAddToCart}
-            className="w-full py-3 border border-black group-hover:border-white text-sm font-bold uppercase tracking-wider bg-white group-hover:bg-black text-black group-hover:text-white transition-colors duration-200 flex items-center justify-center gap-2 rounded-full hover:!bg-white hover:!text-black hover:!border-black"
+            onClick={(e) => {
+              if (product.available) {
+                handleAddToCart(e);
+              } else {
+                e.preventDefault();
+              }
+            }}
+            disabled={!product.available}
+            className={`w-full py-3 border text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 rounded-full transition-colors duration-200 ${
+              !product.available 
+                ? 'bg-black/10 text-black/40 border-black/20 cursor-not-allowed group-hover:bg-black/10 group-hover:text-black/40' 
+                : 'border-black bg-white text-black group-hover:border-white group-hover:bg-black group-hover:text-white hover:!bg-white hover:!text-black hover:!border-black'
+            }`}
           >
-            {added ? (
+            {!product.available ? (
+              <span>Out of Stock</span>
+            ) : added ? (
               <span className="flex items-center gap-2">Added to cart <Check className="w-4 h-4" /></span>
             ) : (
               <span className="flex items-center gap-2">Add to cart <Plus className="w-4 h-4" /></span>

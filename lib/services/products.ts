@@ -18,7 +18,8 @@ export type Product = {
 export const getProducts = async (): Promise<Product[]> => {
   try {
     const productsRef = collection(db, 'products');
-    const q = query(productsRef, where('active', '==', true), where('available', '==', true));
+    // Only filter by active. Available status is handled on the client.
+    const q = query(productsRef, where('active', '==', true));
     const snapshot = await getDocs(q);
     
     return snapshot.docs.map(doc => ({
