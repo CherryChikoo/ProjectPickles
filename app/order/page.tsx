@@ -7,6 +7,9 @@ import { createOrder, CustomerInfo } from '@/lib/services/orders';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { formatPrice } from '@/lib/utils';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FadeIn } from '@/components/ui/motion/FadeIn';
+import { SlideUp } from '@/components/ui/motion/SlideUp';
 
 export default function OrderPage() {
   const router = useRouter();
@@ -137,135 +140,145 @@ export default function OrderPage() {
         </button>
       )}
       
-      <div className="mb-12">
+      <SlideUp className="mb-12">
         <h1 className="font-sans text-5xl md:text-6xl mb-4">
           {step === 1 ? 'Complete Your Order' : 'Review Your Order'}
         </h1>
         <p className="text-lg font-medium">
           {step === 1 ? 'Enter your details so we can review and confirm your order.' : 'Please verify your contact details before submitting.'}
         </p>
-      </div>
+      </SlideUp>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-24">
         
         {/* MAIN CONTENT AREA */}
         <div className="lg:col-span-2">
-          {submitError && (
-            <div className="mb-8 p-6 border-2 border-black bg-white text-black font-bold flex items-center justify-between">
-              <span>{submitError}</span>
-            </div>
-          )}
-          
-          {step === 1 ? (
-            <form onSubmit={handleReview} className="flex flex-col gap-12">
-              {/* Customer Info */}
-              <section>
-                <h2 className="text-sm font-bold uppercase tracking-widest mb-8 pb-4 border-b border-black">Customer Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-bold uppercase tracking-wider mb-2">Full Name *</label>
-                    <input 
-                      type="text" name="name" value={formData.name} onChange={handleChange}
-                      className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
-                    />
-                    {errors.name && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.name}</p>}
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-bold uppercase tracking-wider mb-2">WhatsApp Number * <span className="font-medium normal-case tracking-normal opacity-80">(Order details will be sent here)</span></label>
-                    <input 
-                      type="text" name="whatsapp" value={formData.whatsapp} onChange={handleChange} maxLength={10}
-                      className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
-                    />
-                    {errors.whatsapp && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.whatsapp}</p>}
-                  </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, x: step === 1 ? -20 : 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: step === 1 ? 20 : -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              {submitError && (
+                <div className="mb-8 p-6 border-2 border-black bg-white text-black font-bold flex items-center justify-between">
+                  <span>{submitError}</span>
                 </div>
-              </section>
+              )}
               
-              {/* Delivery Info */}
-              <section>
-                <h2 className="text-sm font-bold uppercase tracking-widest mb-8 pb-4 border-b border-black">Delivery Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-bold uppercase tracking-wider mb-2">Delivery Address *</label>
-                    <textarea 
-                      name="address" value={formData.address} onChange={handleChange} rows={3}
-                      className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black resize-none"
-                    />
-                    {errors.address && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.address}</p>}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold uppercase tracking-wider mb-2">City *</label>
-                    <input 
-                      type="text" name="city" value={formData.city} onChange={handleChange}
-                      className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
-                    />
-                    {errors.city && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.city}</p>}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold uppercase tracking-wider mb-2">Pincode *</label>
-                    <input 
-                      type="text" name="pincode" value={formData.pincode} onChange={handleChange} maxLength={6}
-                      className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
-                    />
-                    {errors.pincode && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.pincode}</p>}
-                  </div>
-                </div>
-              </section>
-              
-              <button 
-                type="submit" 
-                className="mt-8 w-full py-5 bg-black text-white text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black border border-black transition-colors duration-200 flex justify-center items-center gap-3"
-              >
-                REVIEW ORDER
-              </button>
-            </form>
-          ) : (
-            <div className="flex flex-col gap-12">
-              <section>
-                <h2 className="text-sm font-bold uppercase tracking-widest mb-8 pb-4 border-b border-black">Your Details</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-12 border border-black p-8 text-lg">
-                  <div>
-                    <div className="text-sm font-bold uppercase tracking-widest text-black/60 mb-1">Full Name</div>
-                    <div className="font-bold">{formData.name}</div>
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold uppercase tracking-widest text-black/60 mb-1">WhatsApp</div>
-                    <div className="font-bold">{formData.whatsapp}</div>
-                  </div>
-                  <div className="sm:col-span-2 border-t border-black/10 pt-8 mt-4">
-                    <div className="text-sm font-bold uppercase tracking-widest text-black/60 mb-1">Delivery Address</div>
-                    <div className="font-bold">{formData.address}</div>
-                    <div className="font-bold mt-1">{formData.city} - {formData.pincode}</div>
-                  </div>
-                </div>
-              </section>
+              {step === 1 ? (
+                <form onSubmit={handleReview} className="flex flex-col gap-12">
+                  {/* Customer Info */}
+                  <section>
+                    <h2 className="text-sm font-bold uppercase tracking-widest mb-8 pb-4 border-b border-black">Customer Information</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="md:col-span-2">
+                        <label className="block text-sm font-bold uppercase tracking-wider mb-2">Full Name *</label>
+                        <input 
+                          type="text" name="name" value={formData.name} onChange={handleChange}
+                          className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
+                        />
+                        {errors.name && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.name}</p>}
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-sm font-bold uppercase tracking-wider mb-2">WhatsApp Number * <span className="font-medium normal-case tracking-normal opacity-80">(Order details will be sent here)</span></label>
+                        <input 
+                          type="text" name="whatsapp" value={formData.whatsapp} onChange={handleChange} maxLength={10}
+                          className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
+                        />
+                        {errors.whatsapp && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.whatsapp}</p>}
+                      </div>
+                    </div>
+                  </section>
+                  
+                  {/* Delivery Info */}
+                  <section>
+                    <h2 className="text-sm font-bold uppercase tracking-widest mb-8 pb-4 border-b border-black">Delivery Information</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="md:col-span-2">
+                        <label className="block text-sm font-bold uppercase tracking-wider mb-2">Delivery Address *</label>
+                        <textarea 
+                          name="address" value={formData.address} onChange={handleChange} rows={3}
+                          className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black resize-none"
+                        />
+                        {errors.address && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.address}</p>}
+                      </div>
+                      <div>
+                        <label className="block text-sm font-bold uppercase tracking-wider mb-2">City *</label>
+                        <input 
+                          type="text" name="city" value={formData.city} onChange={handleChange}
+                          className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
+                        />
+                        {errors.city && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.city}</p>}
+                      </div>
+                      <div>
+                        <label className="block text-sm font-bold uppercase tracking-wider mb-2">Pincode *</label>
+                        <input 
+                          type="text" name="pincode" value={formData.pincode} onChange={handleChange} maxLength={6}
+                          className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
+                        />
+                        {errors.pincode && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.pincode}</p>}
+                      </div>
+                    </div>
+                  </section>
+                  
+                  <button 
+                    type="submit" 
+                    className="mt-8 w-full py-5 bg-black text-white text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black border border-black transition-colors duration-200 flex justify-center items-center gap-3"
+                  >
+                    REVIEW ORDER
+                  </button>
+                </form>
+              ) : (
+                <div className="flex flex-col gap-12">
+                  <section>
+                    <h2 className="text-sm font-bold uppercase tracking-widest mb-8 pb-4 border-b border-black">Your Details</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-12 border border-black p-8 text-lg">
+                      <div>
+                        <div className="text-sm font-bold uppercase tracking-widest text-black/60 mb-1">Full Name</div>
+                        <div className="font-bold">{formData.name}</div>
+                      </div>
+                      <div>
+                        <div className="text-sm font-bold uppercase tracking-widest text-black/60 mb-1">WhatsApp</div>
+                        <div className="font-bold">{formData.whatsapp}</div>
+                      </div>
+                      <div className="sm:col-span-2 border-t border-black/10 pt-8 mt-4">
+                        <div className="text-sm font-bold uppercase tracking-widest text-black/60 mb-1">Delivery Address</div>
+                        <div className="font-bold">{formData.address}</div>
+                        <div className="font-bold mt-1">{formData.city} - {formData.pincode}</div>
+                      </div>
+                    </div>
+                  </section>
 
-              <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                <button 
-                  onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  disabled={isSubmitting}
-                  className="flex-1 py-5 bg-white text-black text-sm font-bold uppercase tracking-widest hover:bg-black hover:text-white border border-black transition-colors duration-200 flex justify-center items-center disabled:opacity-50"
-                >
-                  GO BACK TO EDIT
-                </button>
-                <button 
-                  onClick={submitOrder}
-                  disabled={isSubmitting}
-                  className="flex-1 py-5 bg-black text-white text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black border border-black transition-colors duration-200 flex justify-center items-center gap-3 disabled:opacity-50 disabled:hover:bg-black disabled:hover:text-white"
-                >
-                  {isSubmitting ? (
-                    <><Loader2 className="w-5 h-5 animate-spin" /> PLACING ORDER...</>
-                  ) : (
-                    'CONFIRM & PLACE ORDER'
-                  )}
-                </button>
-              </div>
-            </div>
-          )}
+                  <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                    <button 
+                      onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                      disabled={isSubmitting}
+                      className="flex-1 py-5 bg-white text-black text-sm font-bold uppercase tracking-widest hover:bg-black hover:text-white border border-black transition-colors duration-200 flex justify-center items-center disabled:opacity-50"
+                    >
+                      GO BACK TO EDIT
+                    </button>
+                    <button 
+                      onClick={submitOrder}
+                      disabled={isSubmitting}
+                      className="flex-1 py-5 bg-black text-white text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black border border-black transition-colors duration-200 flex justify-center items-center gap-3 disabled:opacity-50 disabled:hover:bg-black disabled:hover:text-white"
+                    >
+                      {isSubmitting ? (
+                        <><Loader2 className="w-5 h-5 animate-spin" /> PLACING ORDER...</>
+                      ) : (
+                        'CONFIRM & PLACE ORDER'
+                      )}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
         
         {/* SUMMARY */}
-        <div className="lg:col-span-1">
+        <FadeIn delay={0.2} className="lg:col-span-1">
           <div className="border border-black p-8 sticky top-32">
             <h2 className="text-sm font-bold uppercase tracking-widest mb-8 pb-4 border-b border-black">YOUR ORDER</h2>
             
@@ -288,7 +301,7 @@ export default function OrderPage() {
               <span>₹{formatPrice(cartTotal)}</span>
             </div>
           </div>
-        </div>
+        </FadeIn>
         
       </div>
     </div>

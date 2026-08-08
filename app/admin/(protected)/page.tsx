@@ -5,6 +5,8 @@ import { collection, query, where, getCountFromServer } from 'firebase/firestore
 import { db } from '@/lib/firebase';
 import { Loader2, TrendingUp, Package, ShoppingBag, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { useAdminAuth } from '@/components/admin/AdminAuthContext';
+import { SlideUp } from '@/components/ui/motion/SlideUp';
+import { StaggerContainer, StaggerItem } from '@/components/ui/motion/Stagger';
 
 type DashboardStats = {
   totalOrders: number;
@@ -83,59 +85,59 @@ export default function AdminDashboardPage() {
 
   return (
     <div>
-      <div className="mb-10">
+      <SlideUp className="mb-10">
         <h1 className="font-sans text-4xl font-bold uppercase tracking-widest mb-2">Dashboard Overview</h1>
         <p className="text-black/60 font-bold uppercase tracking-widest text-sm">Welcome back, Admin</p>
-      </div>
+      </SlideUp>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         
         {/* Total Orders Card */}
-        <div className="border border-black p-6 bg-white hover:bg-black/5 transition-colors group">
+        <StaggerItem className="border border-black p-6 bg-white hover:bg-black/5 transition-colors group">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-bold uppercase tracking-widest text-black/60 group-hover:text-black transition-colors">Total Orders</h2>
             <ShoppingBag className="w-5 h-5" />
           </div>
           <div className="text-4xl font-sans font-bold">{stats?.totalOrders || 0}</div>
-        </div>
+        </StaggerItem>
 
         {/* Pending Orders Card */}
-        <div className="border border-black p-6 bg-black text-white hover:bg-black/90 transition-colors">
+        <StaggerItem className="border border-black p-6 bg-black text-white hover:bg-black/90 transition-colors">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-bold uppercase tracking-widest text-white/60">Pending Orders</h2>
             <Clock className="w-5 h-5" />
           </div>
           <div className="text-4xl font-sans font-bold">{stats?.pendingOrders || 0}</div>
-        </div>
+        </StaggerItem>
 
         {/* Accepted Orders Card */}
-        <div className="border border-black p-6 bg-white hover:bg-black/5 transition-colors group">
+        <StaggerItem className="border border-black p-6 bg-white hover:bg-black/5 transition-colors group">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-bold uppercase tracking-widest text-black/60 group-hover:text-black transition-colors">Accepted Orders</h2>
             <CheckCircle className="w-5 h-5" />
           </div>
           <div className="text-4xl font-sans font-bold">{stats?.acceptedOrders || 0}</div>
-        </div>
+        </StaggerItem>
 
         {/* Rejected Orders Card */}
-        <div className="border border-black p-6 bg-white hover:bg-black/5 transition-colors group">
+        <StaggerItem className="border border-black p-6 bg-white hover:bg-black/5 transition-colors group">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-bold uppercase tracking-widest text-black/60 group-hover:text-black transition-colors">Rejected Orders</h2>
             <XCircle className="w-5 h-5" />
           </div>
           <div className="text-4xl font-sans font-bold">{stats?.rejectedOrders || 0}</div>
-        </div>
+        </StaggerItem>
 
         {/* Total Products Card */}
-        <div className="border border-black p-6 bg-white hover:bg-black/5 transition-colors group sm:col-span-2 lg:col-span-1">
+        <StaggerItem className="border border-black p-6 bg-white hover:bg-black/5 transition-colors group sm:col-span-2 lg:col-span-1">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-bold uppercase tracking-widest text-black/60 group-hover:text-black transition-colors">Total Products</h2>
             <Package className="w-5 h-5" />
           </div>
           <div className="text-4xl font-sans font-bold">{stats?.totalProducts || 0}</div>
-        </div>
+        </StaggerItem>
         
-      </div>
+      </StaggerContainer>
     </div>
   );
 }

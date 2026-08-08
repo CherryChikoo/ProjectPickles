@@ -9,6 +9,7 @@ import { ProtectedAdminRoute } from '@/components/admin/ProtectedAdminRoute';
 import { LayoutDashboard, ShoppingBag, Package, Settings, LogOut } from 'lucide-react';
 import { Logo } from '@/components/ui/Logo';
 import { motion } from 'framer-motion';
+import { PageTransition } from '@/components/ui/motion/PageTransition';
 
 export default function ProtectedAdminLayout({
   children,
@@ -74,7 +75,9 @@ export default function ProtectedAdminLayout({
 
         {/* Main Content Area */}
         <main className="flex-1 bg-white p-6 md:p-10 md:overflow-y-auto">
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
         </main>
         
       </div>

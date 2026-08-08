@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/ui/Logo';
 import { useCart } from '@/components/cart/CartContext';
+import { motion } from 'framer-motion';
 
 import { useSettings } from '@/components/settings/SettingsContext';
 
@@ -17,7 +18,12 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-black">
+    <motion.nav 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] }}
+      className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-black"
+    >
       <div className="px-6 sm:px-10 md:px-14 py-4 sm:py-5 flex items-center justify-between max-w-[1600px] mx-auto w-full">
         <Link href="/" className="flex items-center gap-2.5">
           <Logo />
@@ -35,6 +41,6 @@ export const Navbar = () => {
           Cart ({mounted ? cartCount : 0})
         </Link>
       </div>
-    </nav>
+    </motion.nav>
   );
 };

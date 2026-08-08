@@ -6,6 +6,8 @@ import { db } from '@/lib/firebase';
 import { useSettings } from '@/components/settings/SettingsContext';
 import { Loader2, Save } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FadeIn } from '@/components/ui/motion/FadeIn';
+import { SlideUp } from '@/components/ui/motion/SlideUp';
 
 export default function AdminSettingsPage() {
   const { settings, isLoading: isContextLoading } = useSettings();
@@ -86,10 +88,10 @@ export default function AdminSettingsPage() {
 
   return (
     <div>
-      <div className="mb-10">
+      <SlideUp className="mb-10">
         <h1 className="font-sans text-4xl font-bold uppercase tracking-widest mb-2">Global Settings</h1>
         <p className="text-black/60 font-bold uppercase tracking-widest text-sm">Configure your website branding.</p>
-      </div>
+      </SlideUp>
       
       <AnimatePresence>
         {message && (
@@ -107,7 +109,7 @@ export default function AdminSettingsPage() {
         )}
       </AnimatePresence>
 
-      <div className="bg-white border border-black p-6 md:p-10 max-w-2xl">
+      <FadeIn delay={0.2} className="bg-white border border-black p-6 md:p-10 max-w-2xl">
         <form onSubmit={handleSave} className="flex flex-col gap-8">
           
           <div>
@@ -190,7 +192,7 @@ export default function AdminSettingsPage() {
             )}
           </motion.button>
         </form>
-      </div>
+      </FadeIn>
     </div>
   );
 }

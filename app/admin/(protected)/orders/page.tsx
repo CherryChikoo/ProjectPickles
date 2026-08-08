@@ -7,6 +7,9 @@ import { OrderDetailsModal } from '@/components/admin/orders/OrderDetailsModal';
 import { Search, Loader2, RefreshCw } from 'lucide-react';
 import { getCountFromServer, collection, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { FadeIn } from '@/components/ui/motion/FadeIn';
+import { SlideUp } from '@/components/ui/motion/SlideUp';
+import { StaggerContainer, StaggerItem } from '@/components/ui/motion/Stagger';
 
 const STATUS_FILTERS = ['ALL', 'PENDING', 'ACCEPTED', 'REJECTED', 'COMPLETED', 'CANCELLED'];
 
@@ -169,7 +172,7 @@ export default function AdminOrdersPage() {
 
   return (
     <div className="pb-10">
-      <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <SlideUp className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <h1 className="font-sans text-4xl font-bold uppercase tracking-widest mb-2">Orders Management</h1>
           <p className="text-black/60 font-bold uppercase tracking-widest text-sm">View and manage customer orders.</p>
@@ -177,34 +180,34 @@ export default function AdminOrdersPage() {
         <button onClick={handleRefresh} className="self-start md:self-end flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-widest border border-black hover:bg-black hover:text-white transition-colors">
           <RefreshCw className={`w-4 h-4 ${(loading || countsLoading) ? 'animate-spin' : ''}`} /> Refresh
         </button>
-      </div>
+      </SlideUp>
       
       {/* SUMMARY STATS */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-        <div className="border border-black p-4 bg-white text-center">
+      <StaggerContainer className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+        <StaggerItem className="border border-black p-4 bg-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Total Orders</div>
           <div className="text-2xl font-sans font-bold">{countsLoading ? '-' : summaryCounts.total}</div>
-        </div>
-        <div className="border border-black p-4 bg-black text-white text-center">
+        </StaggerItem>
+        <StaggerItem className="border border-black p-4 bg-black text-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/60 mb-2">Pending</div>
           <div className="text-2xl font-sans font-bold">{countsLoading ? '-' : summaryCounts.pending}</div>
-        </div>
-        <div className="border border-black p-4 bg-white text-center">
+        </StaggerItem>
+        <StaggerItem className="border border-black p-4 bg-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Accepted</div>
           <div className="text-2xl font-sans font-bold">{countsLoading ? '-' : summaryCounts.accepted}</div>
-        </div>
-        <div className="border border-black p-4 bg-white text-center">
+        </StaggerItem>
+        <StaggerItem className="border border-black p-4 bg-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Rejected</div>
           <div className="text-2xl font-sans font-bold">{countsLoading ? '-' : summaryCounts.rejected}</div>
-        </div>
-        <div className="border border-black p-4 bg-white text-center">
+        </StaggerItem>
+        <StaggerItem className="border border-black p-4 bg-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Completed</div>
           <div className="text-2xl font-sans font-bold">{countsLoading ? '-' : summaryCounts.completed}</div>
-        </div>
-      </div>
+        </StaggerItem>
+      </StaggerContainer>
 
       {/* FILTERS & SEARCH */}
-      <div className="flex flex-col lg:flex-row gap-4 mb-6">
+      <FadeIn delay={0.2} className="flex flex-col lg:flex-row gap-4 mb-6">
         <div className="flex-1 relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/40" />
           <input 
@@ -241,7 +244,7 @@ export default function AdminOrdersPage() {
             </button>
           ))}
         </div>
-      </div>
+      </FadeIn>
 
       {error ? (
         <div className="p-6 border border-red-600 bg-red-50 text-red-900 font-bold text-center">

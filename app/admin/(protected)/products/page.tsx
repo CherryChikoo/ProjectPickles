@@ -6,6 +6,9 @@ import { ProductsGrid } from '@/components/admin/products/ProductsGrid';
 import { ProductFormModal } from '@/components/admin/products/ProductFormModal';
 import { DeleteConfirmDialog } from '@/components/admin/products/DeleteConfirmDialog';
 import { Search, Plus, RefreshCw } from 'lucide-react';
+import { FadeIn } from '@/components/ui/motion/FadeIn';
+import { SlideUp } from '@/components/ui/motion/SlideUp';
+import { StaggerContainer, StaggerItem } from '@/components/ui/motion/Stagger';
 
 const STATUS_FILTERS = ['ALL', 'ACTIVE', 'INACTIVE', 'AVAILABLE', 'UNAVAILABLE'];
 
@@ -154,7 +157,7 @@ export default function AdminProductsPage() {
 
   return (
     <div className="pb-10">
-      <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <SlideUp className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <h1 className="font-sans text-4xl font-bold uppercase tracking-widest mb-2">Products Management</h1>
           <p className="text-black/60 font-bold uppercase tracking-widest text-sm">Add, edit and manage your pickle products.</p>
@@ -167,34 +170,34 @@ export default function AdminProductsPage() {
             <Plus className="w-4 h-4" /> Add Pickle
           </button>
         </div>
-      </div>
+      </SlideUp>
       
       {/* SUMMARY STATS */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-        <div className="border border-black p-4 bg-white text-center">
+      <StaggerContainer className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+        <StaggerItem className="border border-black p-4 bg-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Total Products</div>
           <div className="text-2xl font-sans font-bold">{loading && products.length === 0 ? '-' : counts.total}</div>
-        </div>
-        <div className="border border-black p-4 bg-black text-white text-center">
+        </StaggerItem>
+        <StaggerItem className="border border-black p-4 bg-black text-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/60 mb-2">Active</div>
           <div className="text-2xl font-sans font-bold">{loading && products.length === 0 ? '-' : counts.active}</div>
-        </div>
-        <div className="border border-black p-4 bg-white text-center">
+        </StaggerItem>
+        <StaggerItem className="border border-black p-4 bg-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Inactive</div>
           <div className="text-2xl font-sans font-bold">{loading && products.length === 0 ? '-' : counts.inactive}</div>
-        </div>
-        <div className="border border-black p-4 bg-white text-center">
+        </StaggerItem>
+        <StaggerItem className="border border-black p-4 bg-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Available</div>
           <div className="text-2xl font-sans font-bold">{loading && products.length === 0 ? '-' : counts.available}</div>
-        </div>
-        <div className="border border-black p-4 bg-white text-center">
+        </StaggerItem>
+        <StaggerItem className="border border-black p-4 bg-white text-center">
           <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Unavailable</div>
           <div className="text-2xl font-sans font-bold">{loading && products.length === 0 ? '-' : counts.unavailable}</div>
-        </div>
-      </div>
+        </StaggerItem>
+      </StaggerContainer>
 
       {/* FILTERS & SEARCH */}
-      <div className="flex flex-col xl:flex-row gap-4 mb-6">
+      <FadeIn delay={0.2} className="flex flex-col xl:flex-row gap-4 mb-6">
         <div className="flex-1 relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/40" />
           <input 
@@ -220,7 +223,7 @@ export default function AdminProductsPage() {
             </button>
           ))}
         </div>
-      </div>
+      </FadeIn>
 
       {error ? (
         <div className="p-6 border border-red-600 bg-red-50 text-red-900 font-bold text-center">

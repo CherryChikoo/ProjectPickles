@@ -6,6 +6,9 @@ import { useCart } from '@/components/cart/CartContext';
 import { QuantitySelector } from '@/components/products/QuantitySelector';
 import { ArrowLeft, Trash2 } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
+import { FadeIn } from '@/components/ui/motion/FadeIn';
+import { SlideUp } from '@/components/ui/motion/SlideUp';
+import { StaggerContainer, StaggerItem } from '@/components/ui/motion/Stagger';
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, cartTotal } = useCart();
@@ -13,26 +16,34 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-white text-black flex flex-col items-center justify-center p-6 text-center border-t border-black">
-        <h1 className="font-sans text-5xl md:text-6xl mb-6">Your cart is empty.</h1>
-        <p className="text-lg font-medium mb-12">Explore our pickle collection and find something you love.</p>
-        <Link 
-          href="/pickles"
-          className="px-8 py-4 bg-black text-white text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black border border-black transition-colors duration-200 rounded-full flex items-center gap-2"
-        >
-          EXPLORE PICKLES <ArrowLeft className="w-4 h-4 rotate-180" />
-        </Link>
+        <SlideUp>
+          <h1 className="font-sans text-5xl md:text-6xl mb-6">Your cart is empty.</h1>
+        </SlideUp>
+        <FadeIn delay={0.1}>
+          <p className="text-lg font-medium mb-12">Explore our pickle collection and find something you love.</p>
+        </FadeIn>
+        <FadeIn delay={0.2}>
+          <Link 
+            href="/pickles"
+            className="px-8 py-4 bg-black text-white text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black border border-black transition-colors duration-200 rounded-full flex items-center gap-2"
+          >
+            EXPLORE PICKLES <ArrowLeft className="w-4 h-4 rotate-180" />
+          </Link>
+        </FadeIn>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-white text-black px-6 sm:px-10 md:px-14 pt-32 sm:pt-40 md:pt-48 pb-16 md:pb-24 max-w-[1600px] mx-auto">
-      <h1 className="font-sans text-5xl md:text-6xl mb-16">Your Cart</h1>
+      <SlideUp>
+        <h1 className="font-sans text-5xl md:text-6xl mb-16">Your Cart</h1>
+      </SlideUp>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
-        <div className="lg:col-span-2 flex flex-col gap-8">
+        <StaggerContainer className="lg:col-span-2 flex flex-col gap-8">
           {items.map(item => (
-            <div key={item.productId} className="flex flex-col sm:flex-row items-start sm:items-center justify-between border border-black p-6 gap-6">
+            <StaggerItem key={item.productId} className="flex flex-col sm:flex-row items-start sm:items-center justify-between border border-black p-6 gap-6">
               <div className="flex flex-row items-center gap-6 w-full sm:w-auto">
                 <div className="w-24 h-24 sm:w-32 sm:h-32 border border-black p-2 flex-shrink-0 bg-white">
                   {item.imageBase64 ? (
@@ -67,11 +78,11 @@ export default function CartPage() {
                   <Trash2 className="w-5 h-5" />
                 </button>
               </div>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
         
-        <div className="lg:col-span-1 border border-black p-8 h-max sticky top-32">
+        <FadeIn delay={0.2} className="lg:col-span-1 border border-black p-8 h-max sticky top-32">
           <h2 className="font-sans text-3xl mb-8">Summary</h2>
           
           <div className="flex justify-between items-center mb-6 font-bold text-lg">
@@ -91,7 +102,7 @@ export default function CartPage() {
           <Link href="/order" className="w-full py-5 bg-black text-white text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black border border-black transition-colors duration-200 rounded-full flex items-center justify-center text-center">
             PROCEED TO ORDER
           </Link>
-        </div>
+        </FadeIn>
       </div>
     </div>
   );
