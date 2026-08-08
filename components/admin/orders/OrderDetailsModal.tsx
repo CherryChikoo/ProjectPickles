@@ -4,6 +4,7 @@ import { X, Check, ArrowRight, Loader2, Calendar, MessageCircle } from 'lucide-r
 import type { Order } from '@/lib/services/orders';
 import { useSettings } from '@/components/settings/SettingsContext';
 import { OrderTrackingTimeline } from '@/components/shared/OrderTrackingTimeline';
+import { formatPrice } from '@/lib/utils';
 
 export const OrderStatusBadge = ({ status }: { status: string }) => {
   let styles = "border-black text-black";
@@ -75,23 +76,23 @@ export function OrderDetailsModal({ order, onClose, onUpdateStatus }: OrderDetai
     let message = '';
 
     if (order.status === 'PENDING') {
-      message = `Hello ${order.customer.name},\n\nWe have received your pickle order #${orderId}.\n\nOrder Total: ₹${order.totalAmount}\n\nOur team is currently reviewing your order and will confirm it shortly.\n\nThank you for ordering with ${businessName}.`;
+      message = `Hello ${order.customer.name},\n\nWe have received your pickle order #${orderId}.\n\nOrder Total: ₹${formatPrice(order.totalAmount)}\n\nOur team is currently reviewing your order and will confirm it shortly.\n\nThank you for ordering with ${businessName}.`;
     } else if (order.status === 'ACCEPTED') {
-      message = `Hello ${order.customer.name},\n\nYour pickle order #${orderId} has been accepted.\n\nOrder Total: ₹${order.totalAmount}\n\nThank you for ordering with ${businessName}.`;
+      message = `Hello ${order.customer.name},\n\nYour pickle order #${orderId} has been accepted.\n\nOrder Total: ₹${formatPrice(order.totalAmount)}\n\nThank you for ordering with ${businessName}.`;
     } else if (order.status === 'REJECTED') {
       const reason = (order as any).rejectionReason || 'Not specified';
       message = `Hello ${order.customer.name},\n\nWe are sorry, but your pickle order #${orderId} could not be accepted.\n\nReason:\n${reason}\n\nPlease contact us if you have any questions.\n\nThank you,\n${businessName}`;
     } else if (order.status === 'COMPLETED') {
-      message = `Hello ${order.customer.name},\n\nYour pickle order #${orderId} has been completed.\n\nOrder Total: ₹${order.totalAmount}\n\nThank you for ordering with ${businessName}!`;
+      message = `Hello ${order.customer.name},\n\nYour pickle order #${orderId} has been completed.\n\nOrder Total: ₹${formatPrice(order.totalAmount)}\n\nThank you for ordering with ${businessName}!`;
     } else {
-      message = `Hello ${order.customer.name},\n\nRegarding your pickle order #${orderId}.\n\nOrder Total: ₹${order.totalAmount}\n\nThank you for ordering with ${businessName}.`;
+      message = `Hello ${order.customer.name},\n\nRegarding your pickle order #${orderId}.\n\nOrder Total: ₹${formatPrice(order.totalAmount)}\n\nThank you for ordering with ${businessName}.`;
     }
 
     let itemsList = '\n\nOrder:\n';
     order.items.forEach(item => {
       itemsList += `• ${item.name} - ${item.weight} × ${item.quantity}\n`;
     });
-    itemsList += `\nTotal: ₹${order.totalAmount}`;
+    itemsList += `\nTotal: ₹${formatPrice(order.totalAmount)}`;
 
     message += itemsList;
 
@@ -201,13 +202,13 @@ export function OrderDetailsModal({ order, onClose, onUpdateStatus }: OrderDetai
                     <p className="text-sm text-black/60 font-medium">{item.weight} — ₹{item.price} × {item.quantity}</p>
                   </div>
                   <div className="font-mono font-bold text-lg">
-                    ₹{item.price * item.quantity}
+                    ₹{formatPrice(item.price * item.quantity)}
                   </div>
                 </div>
               ))}
               <div className="bg-black/5 p-4 flex justify-between items-center border-t border-black font-bold uppercase tracking-widest">
                 <span>Total Amount</span>
-                <span className="font-mono text-xl">₹{order.totalAmount}</span>
+                <span className="font-mono text-xl">₹{formatPrice(order.totalAmount)}</span>
               </div>
             </div>
           </div>

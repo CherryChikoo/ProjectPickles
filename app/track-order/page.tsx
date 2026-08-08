@@ -6,6 +6,7 @@ import { Search, Loader2, ArrowRight } from 'lucide-react';
 import { getTrackedOrder, TrackedOrder } from '@/lib/actions/tracking';
 import { OrderTrackingTimeline } from '@/components/shared/OrderTrackingTimeline';
 import Link from 'next/link';
+import { formatPrice } from '@/lib/utils';
 
 function TrackOrderContent() {
   const searchParams = useSearchParams();
@@ -146,7 +147,7 @@ function TrackOrderContent() {
                 </div>
                 <div>
                   <p className="text-black/60 font-bold text-xs uppercase tracking-wider mb-1">Total</p>
-                  <p className="font-bold">₹{order.totalAmount}</p>
+                  <p className="font-bold">₹{formatPrice(order.totalAmount)}</p>
                 </div>
               </div>
 
@@ -159,7 +160,7 @@ function TrackOrderContent() {
                         <p className="font-bold">{item.name}</p>
                         <p className="text-sm text-black/60">{item.weight} &times; {item.quantity}</p>
                       </div>
-                      <p className="font-bold">₹{item.price * item.quantity}</p>
+                      <p className="font-bold">₹{formatPrice(item.price * item.quantity)}</p>
                     </div>
                   ))}
                 </div>

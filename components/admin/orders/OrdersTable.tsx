@@ -2,6 +2,7 @@ import React from 'react';
 import type { Order } from '@/lib/services/orders';
 import { OrderStatusBadge } from './OrderDetailsModal';
 import { FileText, Loader2 } from 'lucide-react';
+import { formatPrice } from '@/lib/utils';
 
 interface OrdersTableProps {
   orders: (Order & { id: string })[];
@@ -65,7 +66,7 @@ export function OrdersTable({ orders, isLoading, onViewDetails }: OrdersTablePro
                 <td className="p-4 font-medium text-sm">
                   {order.items.length} item{order.items.length !== 1 ? 's' : ''}
                 </td>
-                <td className="p-4 font-mono font-bold whitespace-nowrap">₹{order.totalAmount}</td>
+                <td className="p-4 font-mono font-bold whitespace-nowrap">₹{formatPrice(order.totalAmount)}</td>
                 <td className="p-4 whitespace-nowrap">
                   <OrderStatusBadge status={order.status} />
                 </td>
@@ -100,7 +101,7 @@ export function OrdersTable({ orders, isLoading, onViewDetails }: OrdersTablePro
               <div className="font-bold mb-1">{order.customer.name}</div>
               <div className="text-sm font-medium flex justify-between">
                 <span>{order.items.length} item{order.items.length !== 1 ? 's' : ''}</span>
-                <span className="font-mono font-bold">₹{order.totalAmount}</span>
+                <span className="font-mono font-bold">₹{formatPrice(order.totalAmount)}</span>
               </div>
             </div>
             

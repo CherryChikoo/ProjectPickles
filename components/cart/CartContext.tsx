@@ -78,11 +78,13 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
   
-  const cartTotal = items.reduce((sum, item) => {
-    const priceStr = String(item.price);
-    const numericPrice = parseFloat(priceStr.replace(/[^0-9.]/g, '')) || 0;
-    return sum + (numericPrice * item.quantity);
-  }, 0);
+  const cartTotal = Math.round(
+    items.reduce((sum, item) => {
+      const priceStr = String(item.price);
+      const numericPrice = parseFloat(priceStr.replace(/[^0-9.]/g, '')) || 0;
+      return sum + (numericPrice * item.quantity);
+    }, 0) * 100
+  ) / 100;
 
   return (
     <CartContext.Provider value={{ items, addItem, updateQuantity, removeItem, clearCart, cartCount, cartTotal }}>

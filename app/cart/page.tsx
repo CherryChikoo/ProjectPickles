@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useCart } from '@/components/cart/CartContext';
 import { QuantitySelector } from '@/components/products/QuantitySelector';
 import { ArrowLeft, Trash2 } from 'lucide-react';
+import { formatPrice } from '@/lib/utils';
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, cartTotal } = useCart();
@@ -75,7 +76,7 @@ export default function CartPage() {
           
           <div className="flex justify-between items-center mb-6 font-bold text-lg">
             <span>Subtotal</span>
-            <span>₹{cartTotal}</span>
+            <span>₹{formatPrice(cartTotal)}</span>
           </div>
           <div className="flex justify-between items-center mb-10 text-sm font-medium text-black/60">
             <span>Shipping</span>
@@ -84,7 +85,7 @@ export default function CartPage() {
           
           <div className="flex justify-between items-center mb-10 font-bold text-2xl pt-6 border-t border-black">
             <span>Total</span>
-            <span>₹{cartTotal}</span>
+            <span>₹{formatPrice(cartTotal)}</span>
           </div>
           
           <Link href="/order" className="w-full py-5 bg-black text-white text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black border border-black transition-colors duration-200 rounded-full flex items-center justify-center text-center">

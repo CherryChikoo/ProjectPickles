@@ -6,6 +6,7 @@ import { useCart } from '@/components/cart/CartContext';
 import { createOrder, CustomerInfo } from '@/lib/services/orders';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { formatPrice } from '@/lib/utils';
 
 export default function OrderPage() {
   const router = useRouter();
@@ -275,7 +276,7 @@ export default function OrderPage() {
                     <p className="text-sm font-medium">{item.weight} &times; {item.quantity}</p>
                   </div>
                   <div className="font-bold">
-                    ₹{parseFloat(String(item.price).replace(/[^0-9.]/g, '')) * item.quantity}
+                    ₹{formatPrice(parseFloat(String(item.price).replace(/[^0-9.]/g, '')) * item.quantity)}
                   </div>
                 </div>
               ))}
@@ -283,7 +284,7 @@ export default function OrderPage() {
             
             <div className="border-t border-black pt-6 flex justify-between items-center font-bold text-2xl">
               <span>Total</span>
-              <span>₹{cartTotal}</span>
+              <span>₹{formatPrice(cartTotal)}</span>
             </div>
           </div>
         </div>
