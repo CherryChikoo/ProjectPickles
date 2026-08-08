@@ -33,7 +33,7 @@ export default function Home() {
       
 
       {/* HERO SECTION */}
-      <section className="pt-24 sm:pt-28 md:pt-32 px-6 sm:px-10 md:px-14 pb-16 md:pb-24 max-w-[1600px] mx-auto min-h-[85vh] flex flex-col md:flex-row items-center gap-12 lg:gap-20">
+      <section className="pt-32 sm:pt-36 md:pt-40 px-6 sm:px-10 md:px-14 pb-16 md:pb-24 max-w-[1600px] mx-auto min-h-[85vh] flex flex-col md:flex-row items-center gap-12 lg:gap-20">
         <div className="w-full lg:w-5/12 flex flex-col items-start text-left lg:pl-12 xl:pl-20">
           <h1 className="font-sans text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-[4.5rem] leading-[1.1] tracking-tight text-black font-normal">
             A Taste of Tradition, <br/> Made to Stay.
