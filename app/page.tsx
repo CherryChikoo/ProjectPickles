@@ -1,6 +1,9 @@
 import { ArrowRight } from 'lucide-react';
 import React from 'react';
+import Link from 'next/link';
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
+import { getProducts } from '@/lib/services/products';
+import { ProductCard } from '@/components/products/ProductCard';
 
 const Logo = () => (
   <svg viewBox="0 0 256 256" fill="currentColor" className="w-6 h-6 text-black">
@@ -10,38 +13,14 @@ const Logo = () => (
   </svg>
 );
 
-const pickles = [
-  { id: 1, name: 'Mango Pickle', desc: 'Traditional recipe', weight: '500g', price: '₹250', img: '/ProductCardMango.png' },
-  { id: 2, name: 'Garlic Pickle', desc: 'Bold & spicy', weight: '500g', price: '₹280', img: '/ProductCardMango.png' },
-  { id: 3, name: 'Mixed Veg', desc: 'Farm fresh', weight: '500g', price: '₹240', img: '/ProductCardMango.png' },
-  { id: 4, name: 'Chili Pickle', desc: 'Extra hot', weight: '500g', price: '₹220', img: '/ProductCardMango.png' },
-];
+export const dynamic = 'force-dynamic';
 
-export default function Home() {
+export default async function Home() {
+  const products = await getProducts();
+  const featuredPickles = products.slice(0, 4);
   return (
     <div className="min-h-screen bg-white text-black overflow-x-hidden selection:bg-black selection:text-white">
       
-      {/* NAVBAR */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 sm:px-10 md:px-14 py-4 sm:py-5 flex items-center justify-between bg-white border-b border-black">
-        <div className="flex items-center gap-2.5">
-          <Logo />
-          <span className="font-semibold text-lg tracking-tight text-black uppercase">IndianPickles</span>
-        </div>
-        
-        <div className="hidden md:flex items-center gap-8 font-medium">
-          <a href="#" className="text-sm text-black hover:underline underline-offset-4">Home</a>
-          <a href="#pickles" className="text-sm text-black hover:underline underline-offset-4">Pickles</a>
-          <a href="#story" className="text-sm text-black hover:underline underline-offset-4">Our Story</a>
-          <a href="#why-us" className="text-sm text-black hover:underline underline-offset-4">Why Us</a>
-          <a href="#contact" className="text-sm text-black hover:underline underline-offset-4">Contact</a>
-        </div>
-        
-        <ShimmerButton className="shadow-2xl">
-          <span className="text-center text-sm font-bold tracking-tight text-white uppercase">
-            ORDER NOW
-          </span>
-        </ShimmerButton>
-      </nav>
 
       {/* HERO SECTION */}
       <section className="pt-28 md:pt-36 lg:pt-40 px-6 sm:px-10 md:px-14 pb-16 md:pb-24 max-w-[1600px] mx-auto min-h-[90vh] flex flex-col md:flex-row items-center gap-12 lg:gap-20">
@@ -53,14 +32,16 @@ export default function Home() {
             Authentic, handmade pickles crafted with recipes passed down through generations. No preservatives, just pure nostalgia.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
-            <ShimmerButton className="shadow-2xl px-8 py-4">
-              <span className="text-center text-sm font-bold tracking-tight text-white uppercase">
-                SHOP COLLECTION
-              </span>
-            </ShimmerButton>
-            <button className="px-8 py-4 bg-white text-black text-sm font-bold border border-black hover:bg-black hover:text-white transition-colors duration-200 rounded-full">
+            <Link href="/pickles">
+              <ShimmerButton className="shadow-2xl px-8 py-4">
+                <span className="text-center text-sm font-bold tracking-tight text-white uppercase">
+                  SHOP COLLECTION
+                </span>
+              </ShimmerButton>
+            </Link>
+            <Link href="/#story" className="px-8 py-4 bg-white text-black text-sm font-bold border border-black hover:bg-black hover:text-white transition-colors duration-200 rounded-full inline-flex items-center justify-center">
               DISCOVER OUR STORY
-            </button>
+            </Link>
           </div>
         </div>
         
@@ -93,25 +74,8 @@ export default function Home() {
           <h2 className="text-sm font-bold uppercase tracking-widest text-black mb-12">OUR PICKLES</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {pickles.map(pickle => (
-              <div key={pickle.id} className="group border border-black flex flex-col bg-white">
-                <div className="w-full aspect-square border-b border-black overflow-hidden bg-white p-4">
-                  <img src={pickle.img} alt={pickle.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
-                </div>
-                <div className="p-6 flex flex-col flex-1 bg-white group-hover:bg-black group-hover:text-white transition-colors duration-200">
-                  <h3 className="text-2xl font-sans">{pickle.name}</h3>
-                  <p className="text-sm font-medium mt-1 uppercase tracking-wider">{pickle.desc}</p>
-                  
-                  <div className="mt-8 flex items-center justify-between font-bold text-lg">
-                    <span>{pickle.weight}</span>
-                    <span>{pickle.price}</span>
-                  </div>
-                  
-                  <button className="mt-8 w-full py-3 border border-black group-hover:border-white text-sm font-bold uppercase tracking-wider bg-white group-hover:bg-black text-black group-hover:text-white transition-colors duration-200 flex items-center justify-center gap-2 rounded-full">
-                    View Details <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+            {featuredPickles.map(product => (
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         </div>
@@ -152,9 +116,9 @@ export default function Home() {
             Just honest pickle,<br/>
             made the way it should be.
           </p>
-          <a href="#" className="mt-16 inline-flex items-center gap-3 text-sm font-bold uppercase tracking-widest border-b-2 border-black pb-1 hover:pr-4 transition-all duration-300 self-start">
+          <Link href="/#story" className="mt-16 inline-flex items-center gap-3 text-sm font-bold uppercase tracking-widest border-b-2 border-black pb-1 hover:pr-4 transition-all duration-300 self-start">
             DISCOVER OUR STORY <ArrowRight className="w-4 h-4" />
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -187,48 +151,16 @@ export default function Home() {
               placeholder="Enter your email to get started" 
               className="w-full sm:w-auto flex-1 px-6 py-4 bg-white text-black border border-black focus:outline-none focus:border-black focus:ring-1 focus:ring-black placeholder-black/50 font-medium rounded-full"
             />
-            <ShimmerButton className="shadow-2xl px-8 py-4">
-              <span className="text-center text-sm font-bold tracking-tight text-white uppercase">
-                ORDER NOW
-              </span>
-            </ShimmerButton>
+            <Link href="/pickles">
+              <ShimmerButton className="shadow-2xl px-8 py-4 h-full">
+                <span className="text-center text-sm font-bold tracking-tight text-white uppercase">
+                  ORDER NOW
+                </span>
+              </ShimmerButton>
+            </Link>
           </div>
         </div>
       </section>
-
-      {/* FOOTER */}
-      <footer className="bg-white text-black px-6 sm:px-10 md:px-14 py-16">
-        <div className="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
-          <div className="md:col-span-2">
-            <span className="font-semibold text-2xl tracking-tight text-black uppercase block mb-6">IndianPickles</span>
-            <p className="font-sans text-2xl leading-tight max-w-sm">
-              Authentic homemade pickles,<br/>
-              made with tradition.
-            </p>
-          </div>
-          
-          <div className="flex flex-col gap-4 font-bold text-sm uppercase tracking-widest">
-            <a href="#" className="hover:underline underline-offset-4">Home</a>
-            <a href="#pickles" className="hover:underline underline-offset-4">Pickles</a>
-            <a href="#story" className="hover:underline underline-offset-4">Our Story</a>
-            <a href="#contact" className="hover:underline underline-offset-4">Contact</a>
-          </div>
-          
-          <div className="flex flex-col gap-4 font-bold text-sm uppercase tracking-widest">
-            <a href="#" className="hover:underline underline-offset-4">WhatsApp</a>
-            <a href="#" className="hover:underline underline-offset-4">Phone</a>
-            <a href="#" className="hover:underline underline-offset-4">Instagram</a>
-          </div>
-        </div>
-        
-        <div className="max-w-[1600px] mx-auto mt-24 pt-8 border-t border-black flex flex-col sm:flex-row items-center justify-between text-sm font-medium">
-          <p>© 2026 IndianPickles</p>
-          <div className="flex gap-6 mt-4 sm:mt-0">
-            <a href="#" className="hover:underline underline-offset-4">Privacy</a>
-            <a href="#" className="hover:underline underline-offset-4">Terms</a>
-          </div>
-        </div>
-      </footer>
 
     </div>
   );

@@ -1,0 +1,75 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { Product } from '@/lib/services/products';
+import { useCart } from '@/components/cart/CartContext';
+import { ArrowRight, Check, Plus } from 'lucide-react';
+
+export const ProductCard = ({ product }: { product: Product }) => {
+  const { addItem } = useCart();
+  const [added, setAdded] = useState(false);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addItem({
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      weight: product.weight,
+      imageBase64: product.imageBase64,
+      quantity: 1
+    });
+    
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
+
+  return (
+    <Link href={`/pickles/${product.id}`} className="group border border-black flex flex-col bg-white h-full hover:shadow-2xl transition-shadow duration-300">
+      <div className="w-full aspect-square border-b border-black overflow-hidden bg-white p-4">
+        {product.imageBase64 ? (
+          <img 
+            src={product.imageBase64.startsWith('data:') ? product.imageBase64 : `data:image/png;base64,${product.imageBase64}`} 
+            alt={product.name} 
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 ease-in-out" 
+          />
+        ) : (
+          <img 
+            src="/ProductCardMango.png" 
+            alt={product.name} 
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 ease-in-out" 
+          />
+        )}
+      </div>
+      
+      <div className="p-6 flex flex-col flex-1 bg-white group-hover:bg-black group-hover:text-white transition-colors duration-200">
+        <h3 className="text-2xl font-sans">{product.name}</h3>
+        <p className="text-sm font-bold mt-1 uppercase tracking-wider">{product.desc}</p>
+        {product.description && (
+          <p className="text-sm mt-3 line-clamp-2 opacity-80 font-medium">
+            {product.description}
+          </p>
+        )}
+        
+        <div className="mt-6 flex items-center justify-between font-bold text-lg">
+          <span>{product.weight}</span>
+          <span>{product.price}</span>
+        </div>
+        
+        <div className="mt-auto pt-8">
+          <button 
+            onClick={handleAddToCart}
+            className="w-full py-3 border border-black group-hover:border-white text-sm font-bold uppercase tracking-wider bg-white group-hover:bg-black text-black group-hover:text-white transition-colors duration-200 flex items-center justify-center gap-2 rounded-full hover:!bg-white hover:!text-black hover:!border-black"
+          >
+            {added ? (
+              <span className="flex items-center gap-2">Added to cart <Check className="w-4 h-4" /></span>
+            ) : (
+              <span className="flex items-center gap-2">Add to cart <Plus className="w-4 h-4" /></span>
+            )}
+          </button>
+        </div>
+      </div>
+    </Link>
+  );
+};

@@ -1,9 +1,12 @@
 import './globals.css';
 import type { Metadata } from 'next';
+import { Navbar } from '@/components/layout/Navbar';
+import { Footer } from '@/components/layout/Footer';
+import { CartProvider } from '@/components/cart/CartContext';
 
 export const metadata: Metadata = {
-  title: 'IndianPickles - Build Lasting Relationships',
-  description: 'Conversational AI platform for modern financial institutions.',
+  title: 'Hema Sathya Foods - Traditional Homemade Pickles',
+  description: 'Authentic, handmade pickles crafted with recipes passed down through generations. No preservatives, just pure nostalgia.',
 };
 
 export default function RootLayout({
@@ -20,7 +23,13 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
       </head>
       <body>
-        {children}
+        <CartProvider>
+          <Navbar />
+          <main>
+            {children}
+          </main>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );
