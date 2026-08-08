@@ -80,7 +80,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   
   const cartTotal = items.reduce((sum, item) => {
     const priceStr = String(item.price);
-    const numericPrice = parseInt(priceStr.replace(/[^0-9]/g, ''), 10) || 0;
+    const numericPrice = parseFloat(priceStr.replace(/[^0-9.]/g, '')) || 0;
     return sum + (numericPrice * item.quantity);
   }, 0);
 
