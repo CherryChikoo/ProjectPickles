@@ -45,7 +45,7 @@ export default function Home() {
 
       {/* HERO SECTION */}
       <section className="pt-28 md:pt-36 lg:pt-40 px-6 sm:px-10 md:px-14 pb-16 md:pb-24 max-w-[1600px] mx-auto min-h-[90vh] flex flex-col md:flex-row items-center gap-12 lg:gap-20">
-        <div className="w-full lg:w-5/12 flex flex-col items-start text-left">
+        <div className="w-full lg:w-5/12 flex flex-col items-start text-left lg:pl-12 xl:pl-20">
           <h1 className="font-sans text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-[4.5rem] leading-[1.1] tracking-tight text-black font-normal">
             A Taste of Tradition, <br/> Made to Stay.
           </h1>
@@ -78,11 +78,11 @@ export default function Home() {
         <h2 className="font-sans text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight max-w-4xl font-normal text-black">
           Some recipes aren't written down.<br/> They're passed down.
         </h2>
-        <div className="mt-16 md:mt-24 w-full max-w-5xl h-[40vh] md:h-[60vh] border border-black">
+        <div className="mt-16 md:mt-24 w-full max-w-5xl">
           <img 
-            src="https://images.unsplash.com/photo-1627443834676-e17537b9dc07?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" 
+            src="/BrandSec.png" 
             alt="Making pickles" 
-            className="w-full h-full object-cover grayscale"
+            className="w-full h-auto object-contain"
           />
         </div>
       </section>
