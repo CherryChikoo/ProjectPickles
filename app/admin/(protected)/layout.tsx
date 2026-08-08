@@ -28,10 +28,10 @@ export default function ProtectedAdminLayout({
 
   return (
     <ProtectedAdminRoute>
-      <div className="min-h-screen bg-white text-black flex flex-col md:flex-row">
+      <div className="min-h-screen md:h-screen bg-white text-black flex flex-col md:flex-row md:overflow-hidden">
         
         {/* Sidebar */}
-        <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-black flex flex-col">
+        <aside className="w-full md:w-64 md:flex-shrink-0 border-b md:border-b-0 md:border-r border-black flex flex-col h-auto md:h-full">
           <div className="p-6 border-b border-black">
             <Logo />
             <div className="mt-4 font-semibold text-sm tracking-tight text-black uppercase">{settings.storeName}</div>
@@ -73,7 +73,7 @@ export default function ProtectedAdminLayout({
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1 bg-white p-6 md:p-10 overflow-y-auto">
+        <main className="flex-1 bg-white p-6 md:p-10 md:overflow-y-auto">
           {children}
         </main>
         
