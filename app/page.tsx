@@ -69,7 +69,7 @@ export default function Home() {
         <h2 className="font-sans text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight max-w-4xl font-normal text-black">
           Some recipes aren't written down.<br/> They're passed down.
         </h2>
-        <div className="mt-8 md:mt-12 w-full max-w-5xl">
+        <div className="mt-2 md:mt-4 w-full max-w-5xl">
           <img 
             src="/BrandSection.png" 
             alt="Making pickles" 
