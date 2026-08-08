@@ -41,7 +41,6 @@ export default {
         "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
         marquee: 'marquee 25s linear infinite',
       },
-      },
     },
   },
   plugins: [require("@tailwindcss/container-queries")],
