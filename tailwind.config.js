@@ -9,6 +9,7 @@ export default {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
         serif: ['P22 Mackinac W01 Book', 'Georgia', 'serif'],
+        bebas: ['"Bebas Neue"', 'sans-serif'],
       },
       keyframes: {
         "shimmer-slide": {
@@ -39,7 +40,7 @@ export default {
         "shimmer-slide":
           "shimmer-slide var(--speed) ease-in-out infinite alternate",
         "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
-        marquee: 'marquee 25s linear infinite',
+        marquee: 'marquee 45s linear infinite',
       },
     },
   },
