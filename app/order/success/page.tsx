@@ -36,20 +36,24 @@ function OrderSuccessContent() {
         Our team will review your order and confirm it shortly.
       </p>
 
-      <div className="flex flex-col sm:flex-row gap-4 w-full">
-        <Link 
-          href="/pickles"
-          className="flex-1 py-4 bg-black text-white text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black border border-black transition-colors duration-200 flex justify-center items-center gap-2 rounded-full"
-        >
-          CONTINUE SHOPPING <ArrowRight className="w-4 h-4" />
-        </Link>
+      <div className="flex flex-col gap-4 w-full">
+        {orderId && (
+          <Link 
+            href={`/track-order?orderId=${encodeURIComponent(orderId)}`}
+            className="w-full py-5 bg-black text-white text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black border-2 border-black transition-colors duration-200 flex justify-center items-center rounded-none"
+          >
+            TRACK MY ORDER
+          </Link>
+        )}
         
-        <Link 
-          href="/"
-          className="flex-1 py-4 bg-white text-black text-sm font-bold uppercase tracking-widest hover:bg-black hover:text-white border border-black transition-colors duration-200 flex justify-center items-center rounded-full"
-        >
-          BACK TO HOME
-        </Link>
+        <div className="flex flex-col sm:flex-row gap-4 w-full">
+          <Link 
+            href="/pickles"
+            className="flex-1 py-4 bg-white text-black text-sm font-bold uppercase tracking-widest hover:bg-black hover:text-white border-2 border-black transition-colors duration-200 flex justify-center items-center gap-2 rounded-none"
+          >
+            CONTINUE SHOPPING <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
     </div>
   );

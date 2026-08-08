@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check, ArrowRight, Loader2, Calendar, MessageCircle } from 'lucide-react';
 import type { Order } from '@/lib/services/orders';
 import { useSettings } from '@/components/settings/SettingsContext';
+import { OrderTrackingTimeline } from '@/components/shared/OrderTrackingTimeline';
 
 export const OrderStatusBadge = ({ status }: { status: string }) => {
   let styles = "border-black text-black";
@@ -124,6 +126,11 @@ export function OrderDetailsModal({ order, onClose, onUpdateStatus }: OrderDetai
               <p className="text-xs font-bold uppercase tracking-widest text-black/60 mb-1">Order Date</p>
               <p className="text-sm font-bold flex items-center gap-2"><Calendar className="w-4 h-4"/> {formatDate(order.createdAt)}</p>
             </div>
+          </div>
+
+          <div className="border border-black p-6">
+            <h3 className="text-sm font-bold uppercase tracking-widest border-b border-black pb-2 mb-6">Tracking Timeline</h3>
+            <OrderTrackingTimeline status={order.status} rejectionReason={(order as any).rejectionReason} />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
