@@ -122,7 +122,7 @@ function TrackOrderContent() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-16">
           
           {/* Timeline side */}
-          <div className="md:col-span-2 border-2 border-black p-8 md:p-10 self-start sticky top-32">
+          <div className="md:col-span-2 border-2 border-black p-8 md:p-10">
             <h2 className="text-sm font-bold uppercase tracking-widest border-b border-black pb-4 mb-8">Order Status</h2>
             <OrderTrackingTimeline status={order.status} rejectionReason={order.rejectionReason} />
           </div>
