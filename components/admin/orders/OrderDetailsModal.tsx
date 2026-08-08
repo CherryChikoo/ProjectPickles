@@ -140,22 +140,6 @@ export function OrderDetailsModal({ order, onClose, onUpdateStatus }: OrderDetai
                   <p className="font-mono text-base">{order.customer.whatsapp}</p>
                 </div>
               </div>
-
-              {settings.businessWhatsAppNumber ? (
-                <button
-                  onClick={handleWhatsAppClick}
-                  className="w-full py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black border border-black transition-colors flex justify-center items-center gap-2"
-                >
-                  <MessageCircle className="w-4 h-4" /> SEND {order.status} UPDATE ON WHATSAPP
-                </button>
-              ) : (
-                <div className="p-3 border border-black bg-black/5">
-                  <p className="text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Business WhatsApp number is not configured.</p>
-                  <a href="/admin/settings" className="text-xs font-bold uppercase tracking-widest text-black hover:underline">
-                    Go to WhatsApp Settings →
-                  </a>
-                </div>
-              )}
             </div>
 
             {/* DELIVERY DETAILS */}
@@ -178,6 +162,25 @@ export function OrderDetailsModal({ order, onClose, onUpdateStatus }: OrderDetai
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* WHATSAPP BUTTON (CENTERED FULL WIDTH) */}
+          <div className="flex justify-center -mt-2">
+            {settings.businessWhatsAppNumber ? (
+              <button
+                onClick={handleWhatsAppClick}
+                className="w-full sm:w-2/3 py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black border border-black transition-colors flex justify-center items-center gap-2"
+              >
+                <MessageCircle className="w-4 h-4" /> SEND {order.status} UPDATE ON WHATSAPP
+              </button>
+            ) : (
+              <div className="w-full sm:w-2/3 p-3 border border-black bg-black/5 text-center">
+                <p className="text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Business WhatsApp number is not configured.</p>
+                <a href="/admin/settings" className="text-xs font-bold uppercase tracking-widest text-black hover:underline">
+                  Go to WhatsApp Settings →
+                </a>
+              </div>
+            )}
           </div>
 
           {/* ORDER ITEMS */}
