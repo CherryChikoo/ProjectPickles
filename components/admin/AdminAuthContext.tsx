@@ -40,7 +40,8 @@ export const AdminAuthProvider = ({ children }: { children: React.ReactNode }) =
         unsubscribeUser = onSnapshot(userDocRef, async (userDocSnap) => {
           if (userDocSnap.exists()) {
             const userData = userDocSnap.data();
-            if (userData.role === 'admin' && userData.active === true) {
+            // Allow missing 'active' field to default to true for backwards compatibility with seeded admins
+            if (userData.role === 'admin' && userData.active !== false) {
               setIsAdmin(true);
             } else {
               setIsAdmin(false);

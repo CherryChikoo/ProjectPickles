@@ -46,7 +46,11 @@ function AdminLoginForm() {
       const uid = userCredential.user.uid;
       
       // 2. Generate unique session ID for this browser
-      const sessionId = crypto.randomUUID();
+      // Fallback if crypto.randomUUID is not available in older browsers or non-secure contexts
+      const sessionId = typeof crypto !== 'undefined' && crypto.randomUUID 
+        ? crypto.randomUUID() 
+        : Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      
       
       // 3. Secure Server-Side/Transactional Enforcement
       const trackerRef = doc(db, 'users', uid, 'sessionTracker', 'data');
