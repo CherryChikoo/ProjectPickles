@@ -121,7 +121,7 @@ export const getOrders = async (
   statusFilter?: string,
   lastDoc?: any,
   pageSize = 10
-): Promise<{ orders: Order[]; lastVisible: any }> => {
+): Promise<{ orders: (Order & { id: string })[]; lastVisible: any }> => {
   try {
     const { query, orderBy, limit, startAfter, getDocs, where } = await import('firebase/firestore');
     
@@ -147,8 +147,8 @@ export const getOrders = async (
     const orders = snapshot.docs.map(doc => {
       const data = doc.data();
       return {
-        id: doc.id, // Firestore document ID
-        ...data
+        id: doc.id,
+        ...(data as any)
       };
     }) as (Order & { id: string })[];
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, Instagram, Facebook } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
@@ -265,14 +265,22 @@ export default function Home() {
               {socials.instagram?.enabled && (
                 <StaggerItem>
                   <a href={socials.instagram.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-3 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
-                    <Instagram className="w-5 h-5" /> Instagram {socials.instagram.name && <span className="opacity-70">({socials.instagram.name})</span>}
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                      <path d="M16.11 7.66v.01"/>
+                      <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                    </svg>
+                    Instagram {socials.instagram.name && <span className="opacity-70">({socials.instagram.name})</span>}
                   </a>
                 </StaggerItem>
               )}
               {socials.facebook?.enabled && (
                 <StaggerItem>
                   <a href={socials.facebook.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-3 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
-                    <Facebook className="w-5 h-5" /> Facebook {socials.facebook.name && <span className="opacity-70">({socials.facebook.name})</span>}
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                    </svg>
+                    Facebook {socials.facebook.name && <span className="opacity-70">({socials.facebook.name})</span>}
                   </a>
                 </StaggerItem>
               )}
