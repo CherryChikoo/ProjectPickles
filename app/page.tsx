@@ -109,20 +109,37 @@ export default function Home() {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section id="why-us" className="border-t border-black bg-white px-6 sm:px-10 md:px-14 py-16 md:py-24">
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-[1600px] mx-auto">
-          {[
-            { num: '01', title: 'Traditional Recipes' },
-            { num: '02', title: 'Quality Ingredients' },
-            { num: '03', title: 'Homemade Taste' },
-            { num: '04', title: 'Made With Care' }
-          ].map((item, i) => (
-            <StaggerItem key={i} xOffset={-50} yOffset={0} className="p-8 md:p-12 flex flex-col items-start bg-white border border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:-translate-y-2 hover:shadow-[8px_8px_0_0_rgba(0,0,0,1)] transition-all duration-300 cursor-default">
-              <span className="text-5xl md:text-6xl font-bebas text-black mb-12">{item.num}</span>
-              <h3 className="text-xl md:text-2xl font-sans text-black">{item.title}</h3>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+      <section id="why-us" className="border-t border-black bg-white overflow-hidden py-16 md:py-24 flex whitespace-nowrap">
+        <div className="animate-marquee flex items-center shrink-0">
+          <div className="flex items-center gap-6 md:gap-8 px-3 md:px-4 shrink-0">
+            {[
+              { num: '01', title: 'Traditional Recipes' },
+              { num: '02', title: 'Quality Ingredients' },
+              { num: '03', title: 'Homemade Taste' },
+              { num: '04', title: 'Made With Care' }
+            ].map((item, i) => (
+              <div key={i} className="w-[300px] md:w-[400px] p-8 md:p-12 flex flex-col items-start bg-white border border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:-translate-y-2 hover:shadow-[8px_8px_0_0_rgba(0,0,0,1)] transition-all duration-300 cursor-default whitespace-normal shrink-0">
+                <span className="text-5xl md:text-6xl font-bebas text-black mb-12">{item.num}</span>
+                <h3 className="text-xl md:text-2xl font-sans text-black">{item.title}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="animate-marquee flex items-center shrink-0">
+          <div className="flex items-center gap-6 md:gap-8 px-3 md:px-4 shrink-0">
+            {[
+              { num: '01', title: 'Traditional Recipes' },
+              { num: '02', title: 'Quality Ingredients' },
+              { num: '03', title: 'Homemade Taste' },
+              { num: '04', title: 'Made With Care' }
+            ].map((item, i) => (
+              <div key={`dup-${i}`} className="w-[300px] md:w-[400px] p-8 md:p-12 flex flex-col items-start bg-white border border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:-translate-y-2 hover:shadow-[8px_8px_0_0_rgba(0,0,0,1)] transition-all duration-300 cursor-default whitespace-normal shrink-0">
+                <span className="text-5xl md:text-6xl font-bebas text-black mb-12">{item.num}</span>
+                <h3 className="text-xl md:text-2xl font-sans text-black">{item.title}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* STORY SECTION */}
