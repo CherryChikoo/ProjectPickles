@@ -57,7 +57,7 @@ export default function Home() {
                   </span>
                 </ShimmerButton>
               </Link>
-              <Link href="/#story" className="px-8 py-4 bg-white text-black text-sm font-bold border border-black hover:bg-black hover:text-white transition-colors duration-200 rounded-full inline-flex items-center justify-center">
+              <Link href="#story" className="px-8 py-4 bg-white text-black text-sm font-bold border border-black hover:bg-black hover:text-white transition-colors duration-200 rounded-full inline-flex items-center justify-center">
                 DISCOVER OUR STORY
               </Link>
             </div>
@@ -172,7 +172,7 @@ export default function Home() {
             </p>
           </StaggerItem>
           <StaggerItem>
-            <Link href="/#story" className="mt-16 inline-flex items-center gap-3 text-sm font-bold uppercase tracking-widest border-b-2 border-black pb-1 hover:pr-4 transition-all duration-300 self-start">
+            <Link href="#story" className="mt-16 inline-flex items-center gap-3 text-sm font-bold uppercase tracking-widest border-b-2 border-black pb-1 hover:pr-4 transition-all duration-300 self-start">
               DISCOVER OUR STORY <ArrowRight className="w-4 h-4" />
             </Link>
           </StaggerItem>

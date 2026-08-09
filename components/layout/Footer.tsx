@@ -2,12 +2,14 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useSettings } from '@/components/settings/SettingsContext';
 import { SlideUp } from '@/components/ui/motion/SlideUp';
 import { StaggerContainer, StaggerItem } from '@/components/ui/motion/Stagger';
 
 export const Footer = () => {
   const { settings } = useSettings();
+  const pathname = usePathname();
   
   return (
     <footer className="bg-white text-black px-6 sm:px-10 md:px-14 py-16 overflow-hidden">
@@ -23,7 +25,7 @@ export const Footer = () => {
         <StaggerItem className="flex flex-col gap-4 font-bold text-sm uppercase tracking-widest">
           <Link href="/" className="hover:underline underline-offset-4">Home</Link>
           <Link href="/pickles" className="hover:underline underline-offset-4">Pickles</Link>
-          <Link href="/#story" className="hover:underline underline-offset-4">Our Story</Link>
+          <Link href={pathname === '/' ? '#story' : '/#story'} className="hover:underline underline-offset-4">Our Story</Link>
           <Link href="/track-order" className="hover:underline underline-offset-4">Track Order</Link>
         </StaggerItem>
       </StaggerContainer>
