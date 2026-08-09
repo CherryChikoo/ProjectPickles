@@ -87,6 +87,13 @@ export default function Home() {
             className="w-full h-auto object-contain"
           />
         </FadeIn>
+        <SlideUp delay={0.4} className="relative z-10">
+          <p className="mt-8 md:mt-16 max-w-3xl mx-auto text-lg md:text-xl lg:text-2xl leading-relaxed text-black/80 font-medium">
+            It started in a small family kitchen, where the aroma of roasted spices and sun-dried mangoes filled the air. 
+            For generations, our family has preserved the authentic taste of tradition using hand-picked ingredients and time-honored methods. 
+            Every jar we make is a tribute to our grandmother's uncompromising standards and a taste of true nostalgia.
+          </p>
+        </SlideUp>
       </section>
 
       {/* FEATURED PICKLES */}
