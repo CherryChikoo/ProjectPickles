@@ -162,7 +162,7 @@ export default function OrderPage() {
               transition={{ duration: 0.3 }}
             >
               {submitError && (
-                <div className="mb-8 p-6 border-2 border-black bg-white text-black font-bold flex items-center justify-between">
+                <div className="mb-8 p-6 border-2 border-red-600 bg-red-50 text-red-600 font-bold flex items-center justify-between">
                   <span>{submitError}</span>
                 </div>
               )}
@@ -179,7 +179,7 @@ export default function OrderPage() {
                           type="text" name="name" value={formData.name} onChange={handleChange}
                           className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
                         />
-                        {errors.name && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.name}</p>}
+                        {errors.name && <p className="mt-2 text-sm font-bold uppercase tracking-wider text-red-600">{errors.name}</p>}
                       </div>
                       <div className="md:col-span-2">
                         <label className="block text-sm font-bold uppercase tracking-wider mb-2">WhatsApp Number * <span className="font-medium normal-case tracking-normal opacity-80">(Order details will be sent here)</span></label>
@@ -187,7 +187,7 @@ export default function OrderPage() {
                           type="text" name="whatsapp" value={formData.whatsapp} onChange={handleChange} maxLength={10}
                           className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
                         />
-                        {errors.whatsapp && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.whatsapp}</p>}
+                        {errors.whatsapp && <p className="mt-2 text-sm font-bold uppercase tracking-wider text-red-600">{errors.whatsapp}</p>}
                       </div>
                     </div>
                   </section>
@@ -202,7 +202,7 @@ export default function OrderPage() {
                           name="address" value={formData.address} onChange={handleChange} rows={3}
                           className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black resize-none"
                         />
-                        {errors.address && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.address}</p>}
+                        {errors.address && <p className="mt-2 text-sm font-bold uppercase tracking-wider text-red-600">{errors.address}</p>}
                       </div>
                       <div>
                         <label className="block text-sm font-bold uppercase tracking-wider mb-2">City *</label>
@@ -210,7 +210,7 @@ export default function OrderPage() {
                           type="text" name="city" value={formData.city} onChange={handleChange}
                           className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
                         />
-                        {errors.city && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.city}</p>}
+                        {errors.city && <p className="mt-2 text-sm font-bold uppercase tracking-wider text-red-600">{errors.city}</p>}
                       </div>
                       <div>
                         <label className="block text-sm font-bold uppercase tracking-wider mb-2">Pincode *</label>
@@ -218,7 +218,7 @@ export default function OrderPage() {
                           type="text" name="pincode" value={formData.pincode} onChange={handleChange} maxLength={6}
                           className="w-full p-4 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
                         />
-                        {errors.pincode && <p className="mt-2 text-sm font-bold uppercase tracking-wider">{errors.pincode}</p>}
+                        {errors.pincode && <p className="mt-2 text-sm font-bold uppercase tracking-wider text-red-600">{errors.pincode}</p>}
                       </div>
                     </div>
                   </section>
