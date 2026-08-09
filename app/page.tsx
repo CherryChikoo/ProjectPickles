@@ -265,11 +265,7 @@ export default function Home() {
               {socials.instagram?.enabled && (
                 <StaggerItem>
                   <a href={socials.instagram.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-3 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-                      <path d="M16.11 7.66v.01"/>
-                      <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                    </svg>
+                    <img src="/instagram.webp" alt="Instagram" className="w-6 h-6 object-contain" />
                     Instagram {socials.instagram.name && <span className="opacity-70">({socials.instagram.name})</span>}
                   </a>
                 </StaggerItem>
@@ -277,9 +273,7 @@ export default function Home() {
               {socials.facebook?.enabled && (
                 <StaggerItem>
                   <a href={socials.facebook.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-3 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-                    </svg>
+                    <img src="/facebook.webp" alt="Facebook" className="w-6 h-6 object-contain" />
                     Facebook {socials.facebook.name && <span className="opacity-70">({socials.facebook.name})</span>}
                   </a>
                 </StaggerItem>
@@ -287,10 +281,7 @@ export default function Home() {
               {socials.whatsapp?.enabled && (
                 <StaggerItem>
                   <a href={socials.whatsapp.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-3 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-                      <path d="M16 14.5a1 1 0 0 1-.5 1 4 4 0 0 1-3.5-.5 8.5 8.5 0 0 1-4.5-4.5 4 4 0 0 1-.5-3.5 1 1 0 0 1 1-.5h1.5a1 1 0 0 1 1 1c0 1-.1 2-.5 3a1 1 0 0 0 .5 1.5 5.5 5.5 0 0 0 3 3 1 1 0 0 0 1.5.5c1-.4 2-.5 3-.5a1 1 0 0 1 1 1v1.5z"/>
-                    </svg>
+                    <img src="/Whatsapp.webp" alt="WhatsApp" className="w-6 h-6 object-contain" />
                     WhatsApp {socials.whatsapp.name && <span className="opacity-70">({socials.whatsapp.name})</span>}
                   </a>
                 </StaggerItem>
