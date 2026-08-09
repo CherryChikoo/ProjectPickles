@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Instagram, Facebook } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
@@ -264,22 +264,26 @@ export default function Home() {
             <StaggerContainer className="flex flex-wrap justify-center gap-6 md:gap-8">
               {socials.instagram?.enabled && (
                 <StaggerItem>
-                  <a href={socials.instagram.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-2 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
-                    Instagram {socials.instagram.name && <span className="opacity-70 ml-1">({socials.instagram.name})</span>}
+                  <a href={socials.instagram.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-3 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
+                    <Instagram className="w-5 h-5" /> Instagram {socials.instagram.name && <span className="opacity-70">({socials.instagram.name})</span>}
                   </a>
                 </StaggerItem>
               )}
               {socials.facebook?.enabled && (
                 <StaggerItem>
-                  <a href={socials.facebook.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-2 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
-                    Facebook {socials.facebook.name && <span className="opacity-70 ml-1">({socials.facebook.name})</span>}
+                  <a href={socials.facebook.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-3 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
+                    <Facebook className="w-5 h-5" /> Facebook {socials.facebook.name && <span className="opacity-70">({socials.facebook.name})</span>}
                   </a>
                 </StaggerItem>
               )}
               {socials.whatsapp?.enabled && (
                 <StaggerItem>
-                  <a href={socials.whatsapp.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-2 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
-                    WhatsApp {socials.whatsapp.name && <span className="opacity-70 ml-1">({socials.whatsapp.name})</span>}
+                  <a href={socials.whatsapp.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-3 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                      <path d="M16 14.5a1 1 0 0 1-.5 1 4 4 0 0 1-3.5-.5 8.5 8.5 0 0 1-4.5-4.5 4 4 0 0 1-.5-3.5 1 1 0 0 1 1-.5h1.5a1 1 0 0 1 1 1c0 1-.1 2-.5 3a1 1 0 0 0 .5 1.5 5.5 5.5 0 0 0 3 3 1 1 0 0 0 1.5.5c1-.4 2-.5 3-.5a1 1 0 0 1 1 1v1.5z"/>
+                    </svg>
+                    WhatsApp {socials.whatsapp.name && <span className="opacity-70">({socials.whatsapp.name})</span>}
                   </a>
                 </StaggerItem>
               )}
