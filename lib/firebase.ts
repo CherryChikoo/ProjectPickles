@@ -17,6 +17,7 @@ import { getAuth } from "firebase/auth";
 // Initialize Firebase only if it hasn't been initialized already (crucial for Next.js)
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
+
 const auth = getAuth(app);
 
 // Initialize Analytics only on the client side since it relies on the window object

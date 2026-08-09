@@ -134,7 +134,9 @@ export const getProductById = async (id: string): Promise<Product | null> => {
 
 export const getAdminProducts = async (): Promise<Product[]> => {
   try {
+    const { collection, getDocs } = await import('firebase/firestore');
     const productsRef = collection(db, 'products');
+    
     // Fetch all products without active/available filters
     const snapshot = await getDocs(productsRef);
     
