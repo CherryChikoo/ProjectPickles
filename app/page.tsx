@@ -9,10 +9,14 @@ import { ProductCard } from '@/components/products/ProductCard';
 import { FadeIn } from '@/components/ui/motion/FadeIn';
 import { SlideUp } from '@/components/ui/motion/SlideUp';
 import { StaggerContainer, StaggerItem } from '@/components/ui/motion/Stagger';
+import { useSettings } from '@/components/settings/SettingsContext';
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { settings } = useSettings();
+  const socials = settings.socials;
+  const hasSocials = socials && (socials.instagram?.enabled || socials.facebook?.enabled || socials.whatsapp?.enabled);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -249,6 +253,40 @@ export default function Home() {
           </div>
         </SlideUp>
       </section>
+
+      {/* SOCIAL LINKS */}
+      {hasSocials && (
+        <section className="border-b border-black py-20 md:py-32 bg-[#fafafa] text-black px-6 sm:px-10 md:px-14">
+          <div className="max-w-5xl mx-auto text-center">
+            <SlideUp>
+              <h2 className="font-bebas text-5xl md:text-7xl mb-12">CONNECT WITH US</h2>
+            </SlideUp>
+            <StaggerContainer className="flex flex-wrap justify-center gap-6 md:gap-8">
+              {socials.instagram?.enabled && (
+                <StaggerItem>
+                  <a href={socials.instagram.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-2 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
+                    Instagram {socials.instagram.name && <span className="opacity-70 ml-1">({socials.instagram.name})</span>}
+                  </a>
+                </StaggerItem>
+              )}
+              {socials.facebook?.enabled && (
+                <StaggerItem>
+                  <a href={socials.facebook.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-2 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
+                    Facebook {socials.facebook.name && <span className="opacity-70 ml-1">({socials.facebook.name})</span>}
+                  </a>
+                </StaggerItem>
+              )}
+              {socials.whatsapp?.enabled && (
+                <StaggerItem>
+                  <a href={socials.whatsapp.url} target="_blank" rel="noopener noreferrer" className="px-8 py-5 bg-white border-2 border-black font-bold uppercase tracking-widest text-sm hover:bg-black hover:text-white transition-all flex items-center gap-2 shadow-[6px_6px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
+                    WhatsApp {socials.whatsapp.name && <span className="opacity-70 ml-1">({socials.whatsapp.name})</span>}
+                  </a>
+                </StaggerItem>
+              )}
+            </StaggerContainer>
+          </div>
+        </section>
+      )}
 
     </div>
   );

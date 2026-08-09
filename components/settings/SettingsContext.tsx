@@ -4,10 +4,21 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
+export interface SocialLink {
+  enabled: boolean;
+  name: string;
+  url: string;
+}
+
 export interface Settings {
   storeName: string;
   logoUrl: string | null;
   businessWhatsAppNumber?: string;
+  socials: {
+    instagram: SocialLink;
+    facebook: SocialLink;
+    whatsapp: SocialLink;
+  };
 }
 
 interface SettingsContextType {
@@ -19,6 +30,11 @@ const defaultSettings: Settings = {
   storeName: 'Hema Sathya Foods',
   logoUrl: null,
   businessWhatsAppNumber: undefined,
+  socials: {
+    instagram: { enabled: false, name: '', url: '' },
+    facebook: { enabled: false, name: '', url: '' },
+    whatsapp: { enabled: false, name: '', url: '' },
+  }
 };
 
 const SettingsContext = createContext<SettingsContextType>({
@@ -41,6 +57,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
           storeName: data.storeName || defaultSettings.storeName,
           logoUrl: data.logoUrl || null,
           businessWhatsAppNumber: data.businessWhatsAppNumber,
+          socials: data.socials || defaultSettings.socials,
         });
       }
       setIsLoading(false);

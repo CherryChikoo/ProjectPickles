@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { useSettings } from '@/components/settings/SettingsContext';
+import { useSettings, SocialLink } from '@/components/settings/SettingsContext';
 import { useAdminAuth } from '@/components/admin/AdminAuthContext';
 import { Loader2, Save, Monitor, Smartphone, Trash2, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,6 +18,12 @@ export default function AdminSettingsPage() {
   const [logoUrl, setLogoUrl] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
   
+  const [socials, setSocials] = useState<Record<string, SocialLink>>({
+    instagram: { enabled: false, name: '', url: '' },
+    facebook: { enabled: false, name: '', url: '' },
+    whatsapp: { enabled: false, name: '', url: '' },
+  });
+  
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null);
 
@@ -27,6 +33,9 @@ export default function AdminSettingsPage() {
       setStoreName(settings.storeName || '');
       setLogoUrl(settings.logoUrl || '');
       setWhatsappNumber(settings.businessWhatsAppNumber || '');
+      if (settings.socials) {
+        setSocials(settings.socials);
+      }
     }
   }, [settings, isContextLoading]);
 
@@ -67,6 +76,7 @@ export default function AdminSettingsPage() {
         storeName: storeName.trim(),
         logoUrl: logoUrl.trim() || null,
         businessWhatsAppNumber: normalizedWhatsapp || null,
+        socials: socials,
         updatedAt: new Date().toISOString()
       }, { merge: true });
 
@@ -179,6 +189,66 @@ export default function AdminSettingsPage() {
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Social Links Section */}
+          <div className="pt-8 border-t border-black">
+            <h2 className="font-sans text-2xl font-bold uppercase tracking-widest mb-6">Social Links</h2>
+            <p className="text-sm font-bold uppercase tracking-widest text-black/60 mb-6">These links will appear on the landing page.</p>
+            
+            {(['instagram', 'facebook', 'whatsapp'] as const).map((platform) => (
+              <div key={platform} className="mb-6 p-6 border border-black bg-black/5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-bold uppercase tracking-widest text-lg">{platform}</h3>
+                  <label className="flex items-center cursor-pointer">
+                    <div className="relative">
+                      <input 
+                        type="checkbox" 
+                        className="sr-only" 
+                        checked={socials[platform].enabled}
+                        onChange={(e) => setSocials(prev => ({
+                          ...prev,
+                          [platform]: { ...prev[platform], enabled: e.target.checked }
+                        }))}
+                      />
+                      <div className={`block w-14 h-8 rounded-full border-2 border-black transition-colors ${socials[platform].enabled ? 'bg-black' : 'bg-white'}`}></div>
+                      <div className={`dot absolute left-1 top-1 bg-white border-2 border-black w-6 h-6 rounded-full transition-transform ${socials[platform].enabled ? 'transform translate-x-6 border-white' : ''}`}></div>
+                    </div>
+                  </label>
+                </div>
+                
+                {socials[platform].enabled && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider mb-2">Display Name</label>
+                      <input 
+                        type="text" 
+                        value={socials[platform].name}
+                        onChange={(e) => setSocials(prev => ({
+                          ...prev,
+                          [platform]: { ...prev[platform], name: e.target.value }
+                        }))}
+                        className="w-full p-3 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
+                        placeholder={`e.g. @our_${platform}`}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider mb-2">Link URL</label>
+                      <input 
+                        type="url" 
+                        value={socials[platform].url}
+                        onChange={(e) => setSocials(prev => ({
+                          ...prev,
+                          [platform]: { ...prev[platform], url: e.target.value }
+                        }))}
+                        className="w-full p-3 border border-black bg-white focus:outline-none focus:ring-1 focus:ring-black"
+                        placeholder="https://..."
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
 
           <motion.button 
