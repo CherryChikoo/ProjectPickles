@@ -117,7 +117,7 @@ export default function Home() {
 
       {/* WHY CHOOSE US */}
       <section id="why-us" className="border-t border-black bg-white overflow-hidden py-16 md:py-24 flex whitespace-nowrap">
-        <div className="animate-marquee flex items-center shrink-0">
+        <div className="animate-marquee-reverse flex items-center shrink-0">
           <div className="flex items-center gap-6 md:gap-8 px-3 md:px-4 shrink-0">
             {[
               { num: '01', title: 'Traditional Recipes' },
@@ -132,7 +132,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <div className="animate-marquee flex items-center shrink-0">
+        <div className="animate-marquee-reverse flex items-center shrink-0">
           <div className="flex items-center gap-6 md:gap-8 px-3 md:px-4 shrink-0">
             {[
               { num: '01', title: 'Traditional Recipes' },
