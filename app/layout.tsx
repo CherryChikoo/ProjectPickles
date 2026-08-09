@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { StoreLayoutWrapper } from '@/components/layout/StoreLayoutWrapper';
 import { CartProvider } from '@/components/cart/CartContext';
 import { SettingsProvider } from '@/components/settings/SettingsContext';
+import { ToasterProvider } from '@/components/ui/ToasterProvider';
 
 export const metadata: Metadata = {
   title: 'Hema Sathya Foods - Traditional Homemade Pickles',
@@ -26,6 +27,7 @@ export default function RootLayout({
         <SettingsProvider>
           <CartProvider>
             <StoreLayoutWrapper>
+              <ToasterProvider />
               {children}
             </StoreLayoutWrapper>
           </CartProvider>

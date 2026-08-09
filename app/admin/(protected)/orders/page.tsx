@@ -11,6 +11,7 @@ import { FadeIn } from '@/components/ui/motion/FadeIn';
 import { SlideUp } from '@/components/ui/motion/SlideUp';
 import { StaggerContainer, StaggerItem } from '@/components/ui/motion/Stagger';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 const STATUS_FILTERS = ['ALL', 'PENDING', 'ACCEPTED', 'REJECTED', 'COMPLETED', 'CANCELLED'];
 
@@ -155,7 +156,7 @@ export default function AdminOrdersPage() {
       
       fetchSummaryCounts(true); // Force refresh counts
     } else {
-      alert("Failed to update status.");
+      toast.error("Failed to update status.");
     }
   };
 

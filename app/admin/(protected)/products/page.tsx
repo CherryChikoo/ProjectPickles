@@ -9,6 +9,7 @@ import { Search, Plus, RefreshCw } from 'lucide-react';
 import { FadeIn } from '@/components/ui/motion/FadeIn';
 import { SlideUp } from '@/components/ui/motion/SlideUp';
 import { StaggerContainer, StaggerItem } from '@/components/ui/motion/Stagger';
+import toast from 'react-hot-toast';
 
 const STATUS_FILTERS = ['ALL', 'ACTIVE', 'INACTIVE', 'AVAILABLE', 'UNAVAILABLE'];
 
@@ -96,7 +97,7 @@ export default function AdminProductsPage() {
       cachedProducts = newProducts;
       setProductToDelete(null);
     } else {
-      alert("Failed to delete product.");
+      toast.error("Failed to delete product.");
     }
   };
 
@@ -108,7 +109,7 @@ export default function AdminProductsPage() {
       setProducts(newProducts);
       cachedProducts = newProducts;
     } else {
-      alert("Failed to change product status.");
+      toast.error("Failed to change product status.");
     }
   };
 

@@ -5,6 +5,7 @@ import { User, onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/a
 import { doc, onSnapshot, runTransaction, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 import { useRouter, usePathname } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 interface AdminAuthContextType {
   user: User | null;
@@ -66,7 +67,7 @@ export const AdminAuthProvider = ({ children }: { children: React.ReactNode }) =
               const sessionData = sessionSnap.data();
               if (sessionData.revoked) {
                 // This specific session was revoked
-                alert("Your session has been revoked from another device.");
+                toast.error("Your session has been revoked from another device.");
                 setIsAdmin(false);
                 await signOut(false); // don't try to revoke it again
               } else {
