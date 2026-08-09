@@ -37,7 +37,7 @@ export default function Home() {
 
       {/* HERO SECTION */}
       <section className="pt-32 sm:pt-36 md:pt-40 px-6 sm:px-10 md:px-14 pb-16 md:pb-24 max-w-[1600px] mx-auto min-h-[85vh] flex flex-col md:flex-row items-center gap-12 lg:gap-20">
-        <StaggerContainer className="w-full lg:w-5/12 flex flex-col items-start text-left lg:pl-12 xl:pl-20">
+        <StaggerContainer forceAnimate className="w-full lg:w-5/12 flex flex-col items-start text-left lg:pl-12 xl:pl-20">
           <StaggerItem>
             <h1 className="font-sans text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-[4.5rem] leading-[1.1] tracking-tight text-black font-normal">
               A Taste of Tradition, <br/> Made to Stay.
@@ -94,15 +94,17 @@ export default function Home() {
         <div className="px-6 sm:px-10 md:px-14 py-16 md:py-24">
           <h2 className="text-sm font-bold uppercase tracking-widest text-black mb-12">OUR PICKLES</h2>
           
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {isLoading ? (
-               <div className="col-span-full py-20 text-center font-bold uppercase tracking-widest text-black/60">Loading...</div>
-            ) : featuredPickles.map(product => (
-              <StaggerItem key={product.id}>
-                <ProductCard product={product} />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
+          {isLoading ? (
+             <div className="py-20 text-center font-bold uppercase tracking-widest text-black/60">Loading...</div>
+          ) : (
+            <StaggerContainer key="products-loaded" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {featuredPickles.map(product => (
+                <StaggerItem key={product.id}>
+                  <ProductCard product={product} />
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          )}
         </div>
       </section>
 

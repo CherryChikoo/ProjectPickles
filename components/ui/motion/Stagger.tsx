@@ -8,19 +8,22 @@ interface StaggerContainerProps {
   delayChildren?: number;
   staggerChildren?: number;
   className?: string;
+  forceAnimate?: boolean;
 }
 
 export const StaggerContainer = ({ 
   children, 
   delayChildren = 0, 
   staggerChildren = 0.1, 
-  className = '' 
+  className = '',
+  forceAnimate = false
 }: StaggerContainerProps) => {
   return (
     <motion.div
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
+      whileInView={!forceAnimate ? "visible" : undefined}
+      animate={forceAnimate ? "visible" : undefined}
+      viewport={!forceAnimate ? { once: true, margin: "-50px" } : undefined}
       variants={{
         hidden: {},
         visible: {

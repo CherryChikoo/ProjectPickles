@@ -32,7 +32,7 @@ export default function PicklesPage() {
     <div className="min-h-screen bg-white text-black">
       {/* HERO SECTION */}
       <section className="pt-32 sm:pt-36 md:pt-40 pb-20 md:pb-32 px-6 sm:px-10 md:px-14 max-w-[1600px] mx-auto border-b border-black flex flex-col md:flex-row items-center min-h-[75vh] gap-12 lg:gap-20">
-        <StaggerContainer className="w-full lg:w-5/12 flex flex-col items-start text-left lg:pl-8 xl:pl-12">
+        <StaggerContainer forceAnimate className="w-full lg:w-5/12 flex flex-col items-start text-left lg:pl-8 xl:pl-12">
           <StaggerItem>
             <h2 className="text-sm font-bold uppercase tracking-widest text-black mb-8">OUR COLLECTION</h2>
           </StaggerItem>
@@ -72,7 +72,7 @@ export default function PicklesPage() {
             <p className="text-black font-bold uppercase tracking-widest text-sm">Loading Collection...</p>
           </div>
         ) : products.length > 0 ? (
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <StaggerContainer key="products-loaded" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {products.map(product => (
               <StaggerItem key={product.id}>
                 <ProductCard product={product} />
