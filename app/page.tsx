@@ -117,8 +117,8 @@ export default function Home() {
             { num: '03', title: 'Homemade Taste' },
             { num: '04', title: 'Made With Care' }
           ].map((item, i) => (
-            <StaggerItem key={i} className="p-8 md:p-12 flex flex-col items-start bg-white border border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:-translate-y-2 hover:shadow-[8px_8px_0_0_rgba(0,0,0,1)] transition-all duration-300 cursor-default">
-              <span className="text-5xl md:text-6xl font-bold text-black mb-12">{item.num}</span>
+            <StaggerItem key={i} xOffset={-50} yOffset={0} className="p-8 md:p-12 flex flex-col items-start bg-white border border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:-translate-y-2 hover:shadow-[8px_8px_0_0_rgba(0,0,0,1)] transition-all duration-300 cursor-default">
+              <span className="text-5xl md:text-6xl font-bebas text-black mb-12">{item.num}</span>
               <h3 className="text-xl md:text-2xl font-sans text-black">{item.title}</h3>
             </StaggerItem>
           ))}

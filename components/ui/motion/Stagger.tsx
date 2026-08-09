@@ -44,16 +44,18 @@ interface StaggerItemProps {
   children: React.ReactNode;
   className?: string;
   yOffset?: number;
+  xOffset?: number;
 }
 
-export const StaggerItem = ({ children, className = '', yOffset = 20 }: StaggerItemProps) => {
+export const StaggerItem = ({ children, className = '', yOffset = 20, xOffset = 0 }: StaggerItemProps) => {
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: yOffset },
+        hidden: { opacity: 0, y: yOffset, x: xOffset },
         visible: { 
           opacity: 1, 
           y: 0,
+          x: 0,
           transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] }
         }
       }}
