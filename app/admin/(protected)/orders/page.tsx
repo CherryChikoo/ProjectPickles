@@ -10,6 +10,7 @@ import { db } from '@/lib/firebase';
 import { FadeIn } from '@/components/ui/motion/FadeIn';
 import { SlideUp } from '@/components/ui/motion/SlideUp';
 import { StaggerContainer, StaggerItem } from '@/components/ui/motion/Stagger';
+import { motion } from 'framer-motion';
 
 const STATUS_FILTERS = ['ALL', 'PENDING', 'ACCEPTED', 'REJECTED', 'COMPLETED', 'CANCELLED'];
 
@@ -219,30 +220,40 @@ export default function AdminOrdersPage() {
           />
         </div>
         <div className="flex flex-wrap gap-2">
-          {STATUS_FILTERS.map(status => (
-            <button
-              key={status}
-              onClick={() => { 
-                setStatusFilter(status); 
-                setSearchQuery(''); 
-                // Set optimistic initial state from cache if available to prevent flash
-                if (cachedOrdersByStatus[status]) {
-                  setOrders(cachedOrdersByStatus[status]);
-                  setLastVisible(cachedLastVisibleByStatus[status]);
-                  setHasMore(cachedHasMoreByStatus[status]);
-                } else {
-                  setOrders([]);
-                }
-              }}
-              className={`px-4 py-3 text-xs font-bold uppercase tracking-widest border transition-colors ${
-                statusFilter === status 
-                  ? 'bg-black text-white border-black' 
-                  : 'bg-white text-black border-black/20 hover:border-black'
-              }`}
-            >
-              {status}
-            </button>
-          ))}
+          {STATUS_FILTERS.map(status => {
+            const isActive = statusFilter === status;
+            return (
+              <button
+                key={status}
+                onClick={() => { 
+                  setStatusFilter(status); 
+                  setSearchQuery(''); 
+                  // Set optimistic initial state from cache if available to prevent flash
+                  if (cachedOrdersByStatus[status]) {
+                    setOrders(cachedOrdersByStatus[status]);
+                    setLastVisible(cachedLastVisibleByStatus[status]);
+                    setHasMore(cachedHasMoreByStatus[status]);
+                  } else {
+                    setOrders([]);
+                  }
+                }}
+                className={`relative px-4 py-3 text-xs font-bold uppercase tracking-widest border transition-colors ${
+                  isActive 
+                    ? 'text-white border-black' 
+                    : 'text-black border-black/20 hover:border-black hover:bg-black/5'
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="active-status-filter"
+                    className="absolute inset-0 bg-black z-0"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{status}</span>
+              </button>
+            );
+          })}
         </div>
       </FadeIn>
 
