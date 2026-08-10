@@ -65,13 +65,6 @@ function AdminLoginForm() {
           activeSessionIds = trackerDoc.data().activeSessionIds || [];
         }
         
-        // Let's filter out expired ones if needed, but for now we trust activeSessionIds 
-        // as they are cleaned up on logout/revoke.
-        
-        if (activeSessionIds.length >= 3) {
-          throw new Error('MAX_SESSIONS_REACHED');
-        }
-        
         // Append new session
         const newActiveSessionIds = [...activeSessionIds, sessionId];
         
@@ -100,13 +93,6 @@ function AdminLoginForm() {
       // update the state, and the useEffect above will redirect them to the dashboard.
     } catch (err: any) {
       console.error('Login error:', err);
-      // If we aborted the transaction, sign out from firebase immediately
-      if (err.message === 'MAX_SESSIONS_REACHED') {
-        await firebaseSignOut(auth);
-        setError('Maximum 3 active admin sessions reached. Sign out another device before logging in here.');
-        setIsSubmitting(false);
-        return;
-      }
       // Map Firebase errors to user-friendly messages
       if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
         setError('Invalid email or password.');

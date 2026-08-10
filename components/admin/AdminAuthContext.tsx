@@ -71,10 +71,11 @@ export const AdminAuthProvider = ({ children }: { children: React.ReactNode }) =
                 setIsAdmin(false);
                 await signOut(false); // don't try to revoke it again
               } else {
-                // Heartbeat: update lastActiveAt every ~10 mins if active
                 const lastActive = sessionData.lastActiveAt?.toMillis() || 0;
-                if (Date.now() - lastActive > 10 * 60 * 1000) {
-                  updateDoc(sessionRef, { lastActiveAt: serverTimestamp() }).catch(console.error);
+                if (Date.now() - lastActive > 60 * 60 * 1000) {
+                  toast.error("Your session has expired due to inactivity.");
+                  setIsAdmin(false);
+                  await signOut(false);
                 }
               }
             } else {
@@ -109,6 +110,37 @@ export const AdminAuthProvider = ({ children }: { children: React.ReactNode }) =
       if (unsubscribeSession) unsubscribeSession();
     };
   }, [pathname]);
+
+  useEffect(() => {
+    if (!isAdmin || !user) return;
+
+    let lastInteraction = Date.now();
+    const updateInteraction = () => {
+      lastInteraction = Date.now();
+    };
+
+    const events = ['mousemove', 'keydown', 'click', 'scroll'];
+    events.forEach(e => window.addEventListener(e, updateInteraction));
+
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const localSessionId = localStorage.getItem('adminSessionId');
+      
+      if (now - lastInteraction > 60 * 60 * 1000) {
+        toast.error("Your session has expired due to inactivity.");
+        signOut(true);
+      } else if (localSessionId && (now - lastInteraction < 5 * 60 * 1000)) {
+        // Heartbeat if active recently
+        const sessionRef = doc(db, 'adminSessions', localSessionId);
+        updateDoc(sessionRef, { lastActiveAt: serverTimestamp() }).catch(() => {});
+      }
+    }, 60 * 1000); // Check every minute
+
+    return () => {
+      events.forEach(e => window.removeEventListener(e, updateInteraction));
+      clearInterval(interval);
+    };
+  }, [isAdmin, user]);
 
   const signOut = async (revokeCurrentSession = true) => {
     try {

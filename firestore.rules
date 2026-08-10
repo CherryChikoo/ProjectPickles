@@ -68,12 +68,10 @@ service cloud.firestore {
       allow update: if isAdmin() && request.auth.uid == resource.data.adminUid && request.auth.uid == request.resource.data.adminUid;
     }
 
-    // SESSION TRACKER (Atomic lock for 3-session limit)
+    // SESSION TRACKER (Active sessions list)
     match /users/{userId}/sessionTracker/{trackerId} {
       allow read: if isAdmin() && request.auth.uid == userId;
-      // Guarantee that an admin can never exceed 3 active sessions natively in Firestore
-      allow write: if isAdmin() && request.auth.uid == userId
-                   && request.resource.data.activeSessionIds.size() <= 3;
+      allow write: if isAdmin() && request.auth.uid == userId;
     }
 
     // SETTINGS COLLECTION
