@@ -132,12 +132,12 @@ export const AdminAuthProvider = ({ children }: { children: React.ReactNode }) =
       if (now - lastInteraction > 60 * 60 * 1000) {
         toast.error("Your session has expired due to inactivity.");
         signOut(true);
-      } else if (localSessionId && (now - lastInteraction < 5 * 60 * 1000)) {
+      } else if (localSessionId && (now - lastInteraction < 6 * 60 * 1000)) {
         // Heartbeat if active recently
         const sessionRef = doc(db, 'adminSessions', localSessionId);
         updateDoc(sessionRef, { lastActiveAt: serverTimestamp() }).catch(() => {});
       }
-    }, 60 * 1000); // Check every minute
+    }, 5 * 60 * 1000); // Check every 5 minutes
 
     return () => {
       events.forEach(e => window.removeEventListener(e, updateInteraction));
