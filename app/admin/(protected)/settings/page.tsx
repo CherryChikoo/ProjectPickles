@@ -9,6 +9,7 @@ import { Loader2, Save, Monitor, Smartphone, Trash2, LogOut } from 'lucide-react
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn } from '@/components/ui/motion/FadeIn';
 import { SlideUp } from '@/components/ui/motion/SlideUp';
+import { AccountSettings } from '@/components/settings/AccountSettings';
 
 export default function AdminSettingsPage() {
   const { settings, isLoading: isContextLoading } = useSettings();
@@ -102,10 +103,12 @@ export default function AdminSettingsPage() {
     <div>
       <SlideUp className="mb-10">
         <h1 className="font-sans text-4xl font-bold uppercase tracking-widest mb-2">Global Settings</h1>
-        <p className="text-black/60 font-bold uppercase tracking-widest text-sm">Configure your website branding.</p>
+        <p className="text-black/60 font-bold uppercase tracking-widest text-sm">Configure your website branding and account security.</p>
       </SlideUp>
       
-      <AnimatePresence>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+        <div className="flex flex-col">
+          <AnimatePresence>
         {message && (
           <motion.div 
             initial={{ opacity: 0, height: 0, marginBottom: 0 }}
@@ -121,7 +124,7 @@ export default function AdminSettingsPage() {
         )}
       </AnimatePresence>
 
-      <FadeIn delay={0.2} className="bg-white border border-black p-6 md:p-10 max-w-2xl">
+      <FadeIn delay={0.2} className="bg-white border border-black p-6 md:p-10 w-full">
         <form onSubmit={handleSave} className="flex flex-col gap-8">
           
           <div>
@@ -265,6 +268,12 @@ export default function AdminSettingsPage() {
           </motion.button>
         </form>
       </FadeIn>
+        </div>
+
+        <FadeIn delay={0.4} className="w-full">
+          <AccountSettings />
+        </FadeIn>
+      </div>
 
     </div>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 export interface SocialLink {
@@ -50,23 +50,26 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
     // Listen to real-time changes in the global settings document
     const settingsRef = doc(db, 'settings', 'global');
     
-    const unsubscribe = onSnapshot(settingsRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        setSettings({
-          storeName: data.storeName || defaultSettings.storeName,
-          logoUrl: data.logoUrl || null,
-          businessWhatsAppNumber: data.businessWhatsAppNumber,
-          socials: data.socials || defaultSettings.socials,
-        });
+    const fetchSettings = async () => {
+      try {
+        const docSnap = await getDoc(settingsRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setSettings({
+            storeName: data.storeName || defaultSettings.storeName,
+            logoUrl: data.logoUrl || null,
+            businessWhatsAppNumber: data.businessWhatsAppNumber,
+            socials: data.socials || defaultSettings.socials,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching settings:", error);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    }, (error) => {
-      console.error("Error fetching settings:", error);
-      setIsLoading(false);
-    });
-
-    return () => unsubscribe();
+    };
+    
+    fetchSettings();
   }, []);
 
   return (

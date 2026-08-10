@@ -71,7 +71,10 @@ export const AdminAuthProvider = ({ children }: { children: React.ReactNode }) =
                 setIsAdmin(false);
                 await signOut(false); // don't try to revoke it again
               } else {
-                const lastActive = sessionData.lastActiveAt?.toMillis() || 0;
+                // IMPORTANT: When updateDoc is called with serverTimestamp(), the local snapshot fires
+                // immediately with lastActiveAt set to null until the server responds. 
+                // We default to Date.now() if it's null to avoid immediately expiring the session.
+                const lastActive = sessionData.lastActiveAt ? sessionData.lastActiveAt.toMillis() : Date.now();
                 if (Date.now() - lastActive > 60 * 60 * 1000) {
                   toast.error("Your session has expired due to inactivity.");
                   setIsAdmin(false);
@@ -159,10 +162,7 @@ export const AdminAuthProvider = ({ children }: { children: React.ReactNode }) =
             transaction.set(trackerRef, { activeSessionIds: newActiveSessionIds }, { merge: true });
           }
           
-          transaction.set(sessionRef, { 
-            revoked: true, 
-            revokedAt: serverTimestamp() 
-          }, { merge: true });
+          transaction.delete(sessionRef);
         }).catch(console.error);
       }
     } finally {
