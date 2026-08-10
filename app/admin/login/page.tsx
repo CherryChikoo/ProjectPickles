@@ -41,16 +41,17 @@ function AdminLoginForm() {
     setIsSubmitting(true);
 
     try {
-      // 1. Sign in with Firebase Authentication
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const uid = userCredential.user.uid;
-      
-      // 2. Generate unique session ID for this browser
-      // Fallback if crypto.randomUUID is not available in older browsers or non-secure contexts
+      // 1. Generate unique session ID for this browser FIRST and save it locally
+      // This prevents a race condition where onAuthStateChanged fires before localStorage is set
       const sessionId = typeof crypto !== 'undefined' && crypto.randomUUID 
         ? crypto.randomUUID() 
         : Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
       
+      localStorage.setItem('adminSessionId', sessionId);
+
+      // 2. Sign in with Firebase Authentication
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const uid = userCredential.user.uid;
       
       // 3. Secure Server-Side/Transactional Enforcement
       const trackerRef = doc(db, 'users', uid, 'sessionTracker', 'data');
@@ -85,9 +86,6 @@ function AdminLoginForm() {
           revoked: false
         });
       });
-
-      // 4. Save session ID locally
-      localStorage.setItem('adminSessionId', sessionId);
 
       // AdminAuthContext will automatically detect the login, verify the role and session in Firestore,
       // update the state, and the useEffect above will redirect them to the dashboard.
